@@ -16,7 +16,7 @@
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".ChartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,5 +25,8 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
 
 </manifest>

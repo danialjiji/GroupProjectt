@@ -266,5 +266,24 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    //code untuk number of laki and girlssss
+    public Cursor getGenderCountData(int userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT fgender, COUNT(*) FROM " + TABLE_FRIENDS +
+                " WHERE " + COL_USER_ID + " = ?" +
+                " GROUP BY fgender";
+        return db.rawQuery(query, new String[]{String.valueOf(userID)});
+    }
+
+
+    //code untuk birthday ikut bulan
+    public Cursor getBirthdayCountPerMonth(int userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT strftime('%m', " + COL_FDOB + ") AS month, COUNT(*) " +
+                "FROM " + TABLE_FRIENDS +
+                " WHERE " + COL_USER_ID + " = ?" +
+                " GROUP BY month ORDER BY month";
+        return db.rawQuery(query, new String[]{String.valueOf(userID)});
+    }
 
 }
