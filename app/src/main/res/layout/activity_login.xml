@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#0C3b2e"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Sub Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hey,\nLogin Now."
+        android:textColor="#FFFF"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFF"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Sub Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="If you are new please click button Register. "
+            android:textColor="#999"
+            android:textSize="14sp"
+            android:layout_gravity="start"
+            android:layout_marginTop="4dp" />
+
+
+        <!-- Username -->
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Username"
+            android:backgroundTint="@null"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Password -->
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:backgroundTint="@null"
+
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Reset Password -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?/ "
+            android:textColor="#999"
+            android:textSize="14sp"
+            android:layout_gravity="start" />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Login"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:backgroundTint="#9AC2B0"
+            android:layout_marginTop="30dp"
+            />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Register"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:backgroundTint="#FFBA00"
+            />
+
+    </LinearLayout>
+</LinearLayout>
