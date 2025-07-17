@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/emeraldgreen"
+
+    android:layout_height="match_parent"
+    tools:context=".WheelActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:background="@color/grey">
+
+        <EditText
+            android:id="@+id/inputIdea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Write something"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp">
+
+            <Button
+                android:id="@+id/btn_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Item"
+                android:backgroundTint="@color/goldenyellow"
+                android:layout_marginRight="10dp"/>
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete Items"
+                android:backgroundTint="@color/red"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <com.example.groupproject.WheelView
+        android:id="@+id/wheelView"
+        android:layout_width="wrap_content"
+        android:layout_height="377dp" />
+
+    <Button
+        android:id="@+id/btn_spin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Spin Wheel"
+        android:backgroundTint="@color/goldenyellow"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
