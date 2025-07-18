@@ -30,19 +30,31 @@
             android:padding="24dp"
             android:background="#F5F5F5">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textGreeting"
+                android:text="Hi, User !"
+                android:textColor="#0C3B2E"
+                android:layout_margin="8dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
             <!-- Card: Number of Friends -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
+                android:layout_marginTop="10dp"
                 app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="#6D9773">
 
                     <TextView
                         android:id="@+id/countfriend"
@@ -50,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:text="Number of Friends: 0"
                         android:textSize="18sp"
-                        android:textColor="#0C3B2E"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -67,7 +79,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="#B46617">
 
                     <TextView
                         android:id="@+id/reminder"
@@ -76,30 +89,47 @@
                         android:text="Reminder: Loading..."
                         android:textStyle="bold"
                         android:textSize="16sp"
-                        android:textColor="#BA6617" />
+                        android:textColor="#FFFFFF"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- To-do input -->
-            <EditText
-                android:id="@+id/editTextTodo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter a task"
-                android:backgroundTint="#6D9773"
-                android:textColorHint="#6D9773"
-                android:textColor="#0C3B2E"
-                android:textSize="20sp"
-                android:layout_marginBottom="8dp" />
-
-            <Button
-                android:id="@+id/btnAddTodo"
+            <TextView
+                android:id="@+id/todolist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#0C3B2E"
-                android:layout_marginBottom="8dp" />
+                android:text="To Do List"
+                android:textSize="23dp"
+                android:textColor="#0C3B2E"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <EditText
+                    android:id="@+id/editTextTodo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Enter a task"
+                    android:backgroundTint="#6D9773"
+                    android:textColorHint="#6D9773"
+                    android:textColor="#6D9773"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/btnAddTodo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#0C3B2E"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
 
             <!-- Todo List -->
             <ListView
