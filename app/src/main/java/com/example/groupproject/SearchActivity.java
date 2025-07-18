@@ -5,19 +5,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.groupproject.Friend;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
     EditText searchName;
-    TextView friendsList;
     Button btnSearch;
+    RecyclerView recyclerFriends;
 
     DbHelper db;
+    List<Friend> friendList;
+    FriendAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,35 +32,32 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchName = findViewById(R.id.search_name);
-        friendsList = findViewById(R.id.friends_list);
         btnSearch = findViewById(R.id.btn_search);
+        recyclerFriends = findViewById(R.id.recycler_friends);
 
         db = new DbHelper(this);
+        friendList = new ArrayList<>();
+        adapter = new FriendAdapter(friendList);
+
+        recyclerFriends.setLayoutManager(new LinearLayoutManager(this));
+        recyclerFriends.setAdapter(adapter);
 
         btnSearch.setOnClickListener(v -> {
-            // Get the search name from the EditText and trim any extra spaces
             String searchQuery = searchName.getText().toString().trim();
 
-            // Check if the search query is empty
             if (searchQuery.isEmpty()) {
-                Toast.makeText(SearchActivity.this, "Please enter a name to search.", Toast.LENGTH_SHORT).show();
-                return; // Exit if search input is empty
+                Toast.makeText(this, "Please enter a name to search.", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            // Get the readable database
+            friendList.clear();
             SQLiteDatabase database = db.getReadableDatabase();
 
-            // Define the query with LIKE for partial matching and case insensitivity
-            String query = "SELECT * FROM FRIENDS WHERE LOWER(fname) = LOWER(?)";
-            Cursor cursor = database.rawQuery(query, new String[]{searchQuery});
+            String query = "SELECT * FROM FRIENDS WHERE LOWER(fname) LIKE LOWER(?)";
+            Cursor cursor = database.rawQuery(query, new String[]{"%" + searchQuery + "%"});
 
-            // Create a StringBuilder to hold the search results
-            StringBuilder result = new StringBuilder();
-
-            // If cursor has data, process it
             if (cursor.moveToFirst()) {
                 do {
-                    // Get the friend's details from the cursor
                     String name = cursor.getString(cursor.getColumnIndexOrThrow("fname"));
                     String phone = cursor.getString(cursor.getColumnIndexOrThrow("fnumber"));
                     String email = cursor.getString(cursor.getColumnIndexOrThrow("femail"));
@@ -61,27 +65,16 @@ public class SearchActivity extends AppCompatActivity {
                     String gender = cursor.getString(cursor.getColumnIndexOrThrow("fgender"));
                     String dob = cursor.getString(cursor.getColumnIndexOrThrow("fdob"));
 
-                    // Append details for each friend
-                    result.append("Name: ").append(name)
-                            .append("\nPhone: ").append(phone)
-                            .append("\nEmail: ").append(email)
-                            .append("\nAge: ").append(age)
-                            .append("\nGender: ").append(gender)
-                            .append("\nBirthday: ").append(dob)
-                            .append("\n\n");
-
+                    friendList.add(new Friend(name, phone, email, age, gender, dob));
                 } while (cursor.moveToNext());
             } else {
-                // If no friends found, append a message
-                result.append("No friends found with that name.");
+                Toast.makeText(this, "No friends found.", Toast.LENGTH_SHORT).show();
             }
 
-            // Close the cursor and database to avoid memory leaks
             cursor.close();
             database.close();
 
-            // Set the search result to a TextView (or you can use a ListView/RecyclerView instead)
-            friendsList.setText(result.toString());
+            adapter.notifyDataSetChanged();
         });
     }
 }
