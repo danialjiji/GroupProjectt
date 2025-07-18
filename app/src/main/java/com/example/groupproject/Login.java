@@ -1,5 +1,6 @@
 package com.example.groupproject;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -38,7 +39,15 @@ public class Login extends AppCompatActivity {
 
                 if (cursor.moveToFirst()) {
                     Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
-                    // TODO: Start next activity with Intent
+
+                    // Get userId from cursor
+                    int userId = cursor.getInt(cursor.getColumnIndex("userID")); // change to your actual column name if different
+
+                    // Pass it to AddFriend
+                    Intent intent = new Intent(Login.this, AddFriend.class);
+                    intent.putExtra("userId", userId);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }

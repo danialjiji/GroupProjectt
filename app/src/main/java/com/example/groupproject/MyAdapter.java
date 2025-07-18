@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -82,18 +83,47 @@ public class MyAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent) {
 
-        String childDetail = (String) getChild(groupPosition, childPosition);
+        String childItem = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.child_list, parent, false);
         }
 
-        TextView childText = convertView.findViewById(R.id.childList); // Ensure the ID matches your child_list.xml
-        childText.setText(childDetail);
+        TextView childText = convertView.findViewById(R.id.childText);
+        LinearLayout buttonLayout = convertView.findViewById(R.id.buttonLayout);
+        View btnUpdate = convertView.findViewById(R.id.btnUpdate);
+        View btnDelete = convertView.findViewById(R.id.btnDelete);
+
+        // Hide all views first
+        childText.setVisibility(View.GONE);
+        buttonLayout.setVisibility(View.GONE);
+
+        // Show button layout only once, when "Update"
+        if (childItem.equals("Update")) {
+            buttonLayout.setVisibility(View.VISIBLE);
+
+            btnUpdate.setOnClickListener(v -> {
+                if (context instanceof FriendList) {
+                    ((FriendList) context).handleUpdateClick(groupPosition);
+                }
+            });
+
+            btnDelete.setOnClickListener(v -> {
+                if (context instanceof FriendList) {
+                    ((FriendList) context).handleDeleteClick(groupPosition);
+                }
+            });
+
+        } else if (!childItem.equals("Delete") && !childItem.matches("\\d+")) {
+            // Show regular detail
+            childText.setText(childItem);
+            childText.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
