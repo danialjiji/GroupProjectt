@@ -1,4 +1,4 @@
-package com.example.groupproject;
+/*package com.example.groupproject;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -159,3 +159,4 @@ public class FriendList extends AppCompatActivity {
         showDeleteDialog(name, groupPosition);
     }
 }
+*/
