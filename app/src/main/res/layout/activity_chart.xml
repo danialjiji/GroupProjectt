@@ -9,23 +9,33 @@
     tools:context=".ChartActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Graph Overview"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp"
+        android:background="@color/sagegreen"
+        android:textColor="@color/white"
+        android:padding="8dp"
+        android:gravity="center"
+        android:paddingTop="24dp"
+        android:layout_marginTop="24dp"/>
 
 
     <TextView
+        android:id="@+id/birthdayTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Birthdays by Month"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="4dp"/>
+        android:layout_marginBottom="4dp"
+        android:background="@color/goldenyellow"
+        android:textColor="@color/white"
+        android:padding="8dp"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bar_chart"
@@ -36,13 +46,17 @@
 
 
     <TextView
+        android:id="@+id/genderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gender Distribution"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="4dp"/>
+        android:layout_marginBottom="4dp"
+        android:background="@color/goldenyellow"
+        android:textColor="@color/white"
+        android:padding="8dp"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pie_chart"
@@ -55,5 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Download Charts as PDF"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/emeraldgreen"
         android:layout_marginTop="16dp" />
 </LinearLayout>
