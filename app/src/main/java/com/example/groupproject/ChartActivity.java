@@ -2,6 +2,8 @@ package com.example.groupproject;
 
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.view.View;
 import android.graphics.Bitmap;
@@ -115,40 +117,74 @@ public class ChartActivity extends AppCompatActivity {
 
     private void generatePdf() {
         try {
-            Bitmap barBitmap = getChartBitmap(barChart);
-            Bitmap pieBitmap = getChartBitmap(pieChart);
+            // Prepare summary text
+            StringBuilder summaryText = new StringBuilder();
+            summaryText.append("Birthday Count per Month:\n");
 
-            int pageWidth = Math.max(barBitmap.getWidth(), pieBitmap.getWidth());
-            int pageHeight = barBitmap.getHeight() + pieBitmap.getHeight() + 100;
+            String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+            int[] monthCount = new int[12];
+            Cursor monthCursor = db.getBirthdayCountPerMonth(currentUserId);
+            while (monthCursor.moveToNext()) {
+                int monthIndex = Integer.parseInt(monthCursor.getString(0)) - 1;
+                int count = monthCursor.getInt(1);
+                monthCount[monthIndex] = count;
+            }
+            monthCursor.close();
+
+            for (int i = 0; i < 12; i++) {
+                summaryText.append(months[i]).append(": ").append(monthCount[i]).append(" friends\n");
+            }
+
+            summaryText.append("\nGender Distribution:\n");
+            Cursor genderCursor = db.getGenderCountData(currentUserId);
+            while (genderCursor.moveToNext()) {
+                String gender = genderCursor.getString(0);
+                int count = genderCursor.getInt(1);
+                summaryText.append(gender).append(": ").append(count).append("\n");
+            }
+            genderCursor.close();
+
+            // Set PDF page size
+            int pageWidth = 595;  // A4 size width in points
+            int pageHeight = 842; // A4 size height in points
 
             PdfDocument document = new PdfDocument();
             PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create();
             PdfDocument.Page page = document.startPage(pageInfo);
-
             Canvas canvas = page.getCanvas();
-            canvas.drawBitmap(barBitmap, 0f, 0f, null);
-            canvas.drawBitmap(pieBitmap, 0f, barBitmap.getHeight() + 50f, null);
+
+            // Draw text
+            Paint textPaint = new Paint();
+            textPaint.setColor(Color.BLACK);
+            textPaint.setTextSize(28f);
+
+            int x = 40;
+            int y = 60;
+            for (String line : summaryText.toString().split("\n")) {
+                canvas.drawText(line, x, y, textPaint);
+                y += 40;
+            }
 
             document.finishPage(page);
 
+            // Save file
             File downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-
             File chartsDir = new File(downloadsDir, "Charts");
             if (!chartsDir.exists()) chartsDir.mkdirs();
 
-            File file = new File(chartsDir, "charts_output.pdf");
+            File file = new File(chartsDir, "summary_only.pdf");
             FileOutputStream out = new FileOutputStream(file);
             document.writeTo(out);
             document.close();
             out.close();
 
-            android.media.MediaScannerConnection.scanFile(
+            MediaScannerConnection.scanFile(
                     this,
                     new String[]{file.getAbsolutePath()},
                     new String[]{"application/pdf"},
-                    (path, uri) -> {
-                        Toast.makeText(this, "PDF saved: " + path, Toast.LENGTH_LONG).show();
-                    }
+                    (path, uri) -> Toast.makeText(this, "PDF saved: " + path, Toast.LENGTH_LONG).show()
             );
 
         } catch (Exception e) {
@@ -157,10 +193,18 @@ public class ChartActivity extends AppCompatActivity {
         }
     }
 
+    //test
     private Bitmap getChartBitmap(View chart) {
-        Bitmap returnedBitmap = Bitmap.createBitmap(chart.getWidth(), chart.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(returnedBitmap);
+        chart.measure(
+                View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY)
+        );
+        chart.layout(0, 0, chart.getMeasuredWidth(), chart.getMeasuredHeight());
+
+        Bitmap bitmap = Bitmap.createBitmap(chart.getWidth(), chart.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         chart.draw(canvas);
-        return returnedBitmap;
+        return bitmap;
     }
+
 }
