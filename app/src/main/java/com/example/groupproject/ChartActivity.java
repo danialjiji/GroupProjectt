@@ -193,6 +193,7 @@ public class ChartActivity extends AppCompatActivity {
         }
     }
 
+    //test
     private Bitmap getChartBitmap(View chart) {
         chart.measure(
                 View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY),
