@@ -14,6 +14,7 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -29,7 +30,7 @@ public class dashboard extends AppCompatActivity
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
 
-    TextView countfriend, reminder;
+    TextView countfriend, reminder, textGreeting;
     EditText editTextTodo;
     Button btnAddTodo;
     ListView listViewTodo;
@@ -40,7 +41,7 @@ public class dashboard extends AppCompatActivity
     ArrayList<String> todoList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
-    @SuppressLint({"RestrictedApi", "SetTextI18n"})
+    @SuppressLint({"RestrictedApi", "SetTextI18n", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,71 +70,36 @@ public class dashboard extends AppCompatActivity
         editTextTodo = findViewById(R.id.editTextTodo);
         btnAddTodo = findViewById(R.id.btnAddTodo);
         listViewTodo = findViewById(R.id.listViewTodo);
+        textGreeting = findViewById(R.id.textGreeting);
+
+        //greeting user
+        String username = getIntent().getStringExtra("username");
+        textGreeting.setText("Hi, " + username + "!");
 
         dbHelper = new DbHelper(this);
 
+
         int totalFriends = getTotalCount();
         countfriend.setText("Number of Friends: " + totalFriends);
-       /* int birthdayThisWeek = getBirthdayCountForThisWeek();
-        reminder.setText(birthdayThisWeek > 0
-                ? "Reminder: " + birthdayThisWeek + " friend(s) have birthdays this week!"
-                : "Reminder: No upcoming birthdays");*/
         reminder.setText(getBirthdayReminder());
 
 
         loadTodoList();
 
-        // STEP 1: Force insert a test friend (only once)
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor testCursor = db.rawQuery("SELECT COUNT(*) FROM FRIENDS WHERE userid = 1", null);
-        int existingCount = 0;
-        if (testCursor.moveToFirst()) {
-            existingCount = testCursor.getInt(0);
-        }
-        testCursor.close();
+        listViewTodo.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedTask = todoList.get(position);
 
-        if (existingCount == 0) {
-            ContentValues values = new ContentValues();
-            values.put("fname", "sha");
-            values.put("fnumber", "0123456789");
-            values.put("femail", "test@example.com");
-            values.put("fage", 25);
-            values.put("fdob", "2000-07-18");
-            values.put("fgender", "Female");
-            values.put("userid", 1);
-            long insertResult = db.insert("FRIENDS", null, values);
-            Log.d("DB_INSERT", "Inserted test friend. Result: " + insertResult);
-        } else {
-            Log.d("DB_INSERT", "Test friend already exists, not inserting.");
-        }
-
-// STEP 2: Print out all friends for userID = 1
-        Cursor cursor = db.rawQuery("SELECT * FROM FRIENDS WHERE userid = 1", null);
-        while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndexOrThrow("fname"));
-            String dob = cursor.getString(cursor.getColumnIndexOrThrow("fdob"));
-            Log.d("DB_CHECK", "Friend: " + name + ", DOB: " + dob);
-        }
-        cursor.close();
-
-
-        listViewTodo.setOnItemLongClickListener((parent, view, position, id) -> {
-            String taskToDelete = todoList.get(position);
-
-            // Delete from database
-            dbHelper.getWritableDatabase().delete(
-                    "TODOLIST",
-                    "todo_text = ? AND userid = ?",
-                    new String[]{taskToDelete, String.valueOf(currentUserId)}
-            );
-
-            // Remove from list and refresh UI
-            todoList.remove(position);
-            arrayAdapter.notifyDataSetChanged();
-
-            Toast.makeText(dashboard.this, "Task deleted", Toast.LENGTH_SHORT).show();
-            return true;
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Task")
+                    .setMessage("Are you sure you want to delete this task?\n\n" + selectedTask)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        deleteTodo(selectedTask);
+                        loadTodoList();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         });
+
 
 
         btnAddTodo.setOnClickListener(v -> {
@@ -149,6 +115,10 @@ public class dashboard extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    private void deleteTodo(String task) {
+        dbHelper.getWritableDatabase().delete("TODOLIST", "todo_text = ? AND userid = ?", new String[]{task, String.valueOf(currentUserId)});
     }
 
     @Override
@@ -254,21 +224,6 @@ public class dashboard extends AppCompatActivity
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todoList);
         listViewTodo.setAdapter(arrayAdapter);
 
-        listViewTodo.setOnItemLongClickListener((adapterView, view, position, id) -> {
-            String item = todoList.get(position);
-
-            // Delete from DB
-            dbHelper.getWritableDatabase().delete(
-                    "TODOLIST",
-                    "todo_text = ? AND userid = ?",
-                    new String[]{item, String.valueOf(currentUserId)}
-            );
-
-            // Refresh list
-            loadTodoList();
-            Toast.makeText(this, "Task deleted", Toast.LENGTH_SHORT).show();
-            return true;
-        });
     }
 
     // Insert a new to-do item into DB
