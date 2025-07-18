@@ -1,4 +1,4 @@
-package com.example.groupproject;
+/*package com.example.groupproject;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -119,4 +119,4 @@ public class AddFriend extends AppCompatActivity {
 
 
     }
-}
+}*/
