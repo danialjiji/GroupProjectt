@@ -150,6 +150,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:background="#0C3B2E"
+        app:headerLayout="@layout/nav_header"
         app:itemTextColor="#FFFFFF"
         app:itemIconTint="#FFBA00"
         app:menu="@menu/nav_menu" />

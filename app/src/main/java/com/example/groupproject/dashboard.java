@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
@@ -47,12 +48,13 @@ public class dashboard extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        dashboard = findViewById(R.id.dashboard);
+        navigationView = findViewById(R.id.navigation_view);
+
         // Set the toolbar as the action bar
         setSupportActionBar(findViewById(R.id.toolbar));
 
         //setup drawer
-        dashboard = findViewById(R.id.dashboard);
-        navigationView = findViewById(R.id.navigation_view);
 
         drawerToggle = new ActionBarDrawerToggle(this, dashboard,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -128,7 +130,7 @@ public class dashboard extends AppCompatActivity
        if (id == R.id.nav_dashboard) {
             // Already here
         } else if (id == R.id.nav_friends) {
-            startActivity(new Intent(this, ChartActivity.class));
+            startActivity(new Intent(this, FriendList.class));
         }
 
         dashboard.closeDrawers();
@@ -225,6 +227,22 @@ public class dashboard extends AppCompatActivity
         listViewTodo.setAdapter(arrayAdapter);
 
     }
+
+ /*   private String getUsernameFromDb(int userId) {
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
+                "SELECT name FROM USER WHERE id = ?", new String[]{String.valueOf(userId)}
+        );
+
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(0);
+            cursor.close();
+            return name;
+        }
+
+        cursor.close();
+        return "User";
+    }*/
+
 
     // Insert a new to-do item into DB
     private void insertTodo(String task) {

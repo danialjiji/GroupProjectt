@@ -3,12 +3,11 @@
 
     <item
         android:id="@+id/nav_dashboard"
-        android:title="Dashboard"
-        android:icon="@drawable/ic_dashboard"/>
+        android:title="Dashboard" />
 
     <item
         android:id="@+id/nav_friends"
-        android:title="Friend List"
-        android:icon="@drawable/ic_people" />
+        android:title="Friend List" />
+
 
 </menu>

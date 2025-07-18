@@ -26,11 +26,23 @@
         android:visibility="gone">
 
         <Button
+            android:id="@+id/btnBirthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Birthday"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0C3B2E"
+            android:layout_marginRight="8dp"
+            android:textSize="14sp"/>
+
+        <Button
             android:id="@+id/btnUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"
             android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0C3B2E"
             android:layout_marginEnd="8dp"/>
 
         <Button
@@ -38,6 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0C3B2E"
             android:textSize="14sp"/>
     </LinearLayout>
 </LinearLayout>
