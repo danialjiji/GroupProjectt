@@ -17,7 +17,7 @@
         android:theme="@style/Theme.GroupProject"
         tools:targetApi="31">
         <activity
-            android:name=".Register"
+            android:name=".WheelActivity"
             android:exported="false" />
         <activity
             android:name=".Login"
