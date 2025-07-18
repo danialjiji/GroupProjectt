@@ -1,10 +1,13 @@
 package com.example.groupproject;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,7 +16,11 @@ import android.os.Environment;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -25,13 +32,15 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ChartActivity extends AppCompatActivity {
+public class ChartActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     BarChart barChart;
     PieChart pieChart;
@@ -39,10 +48,31 @@ public class ChartActivity extends AppCompatActivity {
     DbHelper db;
     int currentUserId = 1;
 
+    DrawerLayout chartrep;
+    NavigationView navigationView;
+    ActionBarDrawerToggle drawerToggle;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+
+        // Set toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Drawer setup
+        chartrep = findViewById(R.id.chart_report);
+        navigationView = findViewById(R.id.navigation_view);
+        drawerToggle = new ActionBarDrawerToggle(this, chartrep,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        chartrep.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        navigationView.setNavigationItemSelectedListener(this);
 
         db = new DbHelper(this);
         barChart = findViewById(R.id.bar_chart);
@@ -207,4 +237,30 @@ public class ChartActivity extends AppCompatActivity {
         return bitmap;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_dashboard) {
+            startActivity(new Intent(this, dashboard.class));
+        } else if (id == R.id.nav_friends) {
+            startActivity(new Intent(this, FriendList.class));
+        } else if (id == R.id.nav_search) {
+            startActivity(new Intent(this, SearchActivity.class));
+        } else if (id == R.id.nav_addfriend) {
+            startActivity(new Intent(this, AddFriend.class));
+        } else if (id == R.id.nav_chart) {
+          // this page
+        } else if (id == R.id.nav_wheel) {
+            startActivity(new Intent(this, WheelActivity.class));
+        }
+
+        chartrep.closeDrawers();
+        return true;
+    }
 }
