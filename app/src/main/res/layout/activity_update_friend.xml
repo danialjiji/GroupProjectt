@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:id="@+id/main_recyclerview"
+    tools:context=".UpdateFriend">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Update Friend"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_ufn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Full Name"
+        android:inputType="text"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/et_ufemail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Email"
+        android:inputType="none"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/et_ufnum"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Phone Number"
+        android:inputType="text"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/et_ufage"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Age"
+        android:inputType="text"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/et_ufdob"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="choose date"
+        android:focusable="false"
+        android:inputType="none"
+        android:layout_marginTop="20dp"/>
+
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uradiogp1"
+        android:layout_marginTop="10dp" >
+
+        <RadioButton
+            android:id="@+id/uradiob1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Male" />
+
+        <RadioButton
+            android:id="@+id/uradiob2"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Female" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/ubtn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:id="@+id/ubtn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:layout_margin="5dp" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

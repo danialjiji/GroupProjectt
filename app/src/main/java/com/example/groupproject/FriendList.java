@@ -22,6 +22,7 @@ public class FriendList extends AppCompatActivity {
     Map<String, List<String>> details;
     MyAdapter myAdapter;
     DbHelper db;
+    int userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class FriendList extends AppCompatActivity {
         db = new DbHelper(this);
         expandableListView = findViewById(R.id.expandable_list);
 
-        int userid = getIntent().getIntExtra("userid", 1); // default to 1
+        userid = getIntent().getIntExtra("userid", 1); // default to 1
 
         getData(userid);
 
@@ -41,19 +42,20 @@ public class FriendList extends AppCompatActivity {
         expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             String name = names.get(groupPosition);
             List<String> friendDetails = details.get(name);
-
-            // Last two items are "Update" and "Delete"
-            int size = friendDetails.size();
             String clickedItem = friendDetails.get(childPosition);
 
             if (clickedItem.equals("Update")) {
+                int friendID = Integer.parseInt(friendDetails.get(7)); // index of friendID
+
                 Intent intent = new Intent(FriendList.this, UpdateFriend.class);
+                intent.putExtra("friendsID", friendID);
                 intent.putExtra("fname", name);
                 intent.putExtra("fnumber", friendDetails.get(0).replace("Phone: ", ""));
                 intent.putExtra("femail", friendDetails.get(1).replace("Email: ", ""));
                 intent.putExtra("fage", friendDetails.get(2).replace("Age: ", ""));
                 intent.putExtra("fgender", friendDetails.get(3).replace("Gender: ", ""));
                 intent.putExtra("fdob", friendDetails.get(4).replace("Birthday: ", ""));
+                intent.putExtra("userid", userid);
                 startActivity(intent);
                 return true;
             } else if (clickedItem.equals("Delete")) {
@@ -65,6 +67,14 @@ public class FriendList extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData(userid);
+        myAdapter = new MyAdapter(this, names, details);
+        expandableListView.setAdapter(myAdapter);
+    }
+
     private void getData(int userID) {
         names = new ArrayList<>();
         details = new HashMap<>();
@@ -74,6 +84,7 @@ public class FriendList extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             do {
+                int friendID = cursor.getInt(cursor.getColumnIndexOrThrow("friendsID"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("fname"));
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow("fnumber"));
                 String email = cursor.getString(cursor.getColumnIndexOrThrow("femail"));
@@ -91,6 +102,7 @@ public class FriendList extends AppCompatActivity {
                 friendDetails.add("Birthday: " + dob);
                 friendDetails.add("Update");
                 friendDetails.add("Delete");
+                friendDetails.add(String.valueOf(friendID)); // index 7
 
                 details.put(name, friendDetails);
             } while (cursor.moveToNext());
@@ -122,5 +134,28 @@ public class FriendList extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void handleUpdateClick(int groupPosition) {
+        String name = names.get(groupPosition);
+        List<String> friendDetails = details.get(name);
+
+        int friendID = Integer.parseInt(friendDetails.get(7)); // ID is at index 7
+
+        Intent intent = new Intent(FriendList.this, UpdateFriend.class);
+        intent.putExtra("friendsID", friendID);
+        intent.putExtra("fname", name);
+        intent.putExtra("fnumber", friendDetails.get(0).replace("Phone: ", ""));
+        intent.putExtra("femail", friendDetails.get(1).replace("Email: ", ""));
+        intent.putExtra("fage", friendDetails.get(2).replace("Age: ", ""));
+        intent.putExtra("fgender", friendDetails.get(3).replace("Gender: ", ""));
+        intent.putExtra("fdob", friendDetails.get(4).replace("Birthday: ", ""));
+        intent.putExtra("userid", userid);
+        startActivity(intent);
+    }
+
+    public void handleDeleteClick(int groupPosition) {
+        String name = names.get(groupPosition);
+        showDeleteDialog(name, groupPosition);
     }
 }

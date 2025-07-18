@@ -38,13 +38,14 @@ public class AddFriend extends AppCompatActivity {
 
         db = new DbHelper(this);
 
-        int userid = 1;
+        int userId = getIntent().getIntExtra("userId", -1); // -1 is default if not found
 
-//        int userid = getIntent().getIntExtra("userid", 1);  // Default to -1 if not found
-//        if (userid == -1) {
-//            Toast.makeText(this, "User ID not found. Please log in again.", Toast.LENGTH_SHORT).show();
-//            finish(); // Optionally redirect to Login screen
-//        }
+        if (userId != -1) {
+            // use userId as needed
+        } else {
+            Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show();
+        }
+
 
 
         etFN = findViewById(R.id.et_fn);
@@ -107,7 +108,7 @@ public class AddFriend extends AppCompatActivity {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
                 int fage = Integer.parseInt(fageStr);
-                db.insertFriend(fname, fnum, femail, fage, fdob, fgender, userid);
+                db.insertFriend(fname, fnum, femail, fage, fdob, fgender, userId);
                 Toast.makeText(this, "Friend Added!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, FriendList.class);
                 intent.putExtra("userid", 1);

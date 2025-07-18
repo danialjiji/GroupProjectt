@@ -286,4 +286,19 @@ public class DbHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{String.valueOf(userID)});
     }
 
+    public int updateFriend(int friendID, String fname, String fnumber, String femail, int fage, String fdob, String fgender) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_FNAME, fname);
+        values.put(COL_FNUMBER, fnumber);
+        values.put(COL_FEMAIL, femail);
+        values.put(COL_FAGE, fage);
+        values.put(COL_FDOB, fdob);
+        values.put(COL_FGENDER, fgender);
+
+        return db.update(TABLE_FRIENDS, values, COL_FRIEND_ID + "=?", new String[]{String.valueOf(friendID)});
+    }
+
+
+
 }
