@@ -38,16 +38,20 @@ public class Login extends AppCompatActivity {
                 Cursor cursor = db.rawQuery("SELECT * FROM USER WHERE username=? AND password=?", new String[]{username, password});
 
                 if (cursor.moveToFirst()) {
-                    Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+                    int columnIndex = cursor.getColumnIndex("userID");
 
-                    // Get userId from cursor
-                    int userId = cursor.getInt(cursor.getColumnIndex("userID")); // change to your actual column name if different
+                    if (columnIndex != -1) {
+                        int userId = cursor.getInt(columnIndex);
 
-                    // Pass it to AddFriend
-                    Intent intent = new Intent(Login.this, AddFriend.class);
-                    intent.putExtra("userId", userId);
-                    startActivity(intent);
-                    finish();
+                        Intent intent = new Intent(Login.this, dashboard.class);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Login Success, but failed to retrieve userID", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }

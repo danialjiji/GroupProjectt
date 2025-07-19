@@ -1,16 +1,12 @@
 package com.example.groupproject;
 
 import android.annotation.SuppressLint;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
@@ -55,7 +51,6 @@ public class dashboard extends AppCompatActivity
         setSupportActionBar(findViewById(R.id.toolbar));
 
         //setup drawer
-
         drawerToggle = new ActionBarDrawerToggle(this, dashboard,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -85,7 +80,6 @@ public class dashboard extends AppCompatActivity
         countfriend.setText("Number of Friends: " + totalFriends);
         reminder.setText(getBirthdayReminder());
 
-
         loadTodoList();
 
         listViewTodo.setOnItemClickListener((parent, view, position, id) -> {
@@ -101,8 +95,6 @@ public class dashboard extends AppCompatActivity
                     .setNegativeButton("No", null)
                     .show();
         });
-
-
 
         btnAddTodo.setOnClickListener(v -> {
             String task = editTextTodo.getText().toString().trim();
@@ -131,11 +123,20 @@ public class dashboard extends AppCompatActivity
             // Already here
         } else if (id == R.id.nav_friends) {
             startActivity(new Intent(this, FriendList.class));
-        }
+        } else if (id == R.id.nav_search) {
+           startActivity(new Intent(this, SearchActivity.class));
+       } else if (id == R.id.nav_addfriend) {
+           startActivity(new Intent(this, AddFriend.class));
+       } else if (id == R.id.nav_chart) {
+           startActivity(new Intent(this, ChartActivity.class));
+       } else if (id == R.id.nav_wheel) {
+           startActivity(new Intent(this, WheelActivity.class));
+       }
 
         dashboard.closeDrawers();
         return true;
     }
+
 
     // start friends info
     private int getTotalCount() {

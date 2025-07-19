@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:id="@+id/main_recyclerview"
     tools:context=".AddFriend">
+
+
+    <!-- Main layout with vertical content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0C3B2E"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Buddy Dashboard"
+            app:titleTextColor="@android:color/white" />
+
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,6 +41,7 @@
         android:layout_height="50dp"
         android:hint="Full Name"
         android:inputType="text"
+        android:layout_margin="12dp"
         android:layout_marginTop="20dp" />
 
     <EditText
@@ -32,6 +50,7 @@
         android:layout_height="50dp"
         android:hint="Email"
         android:inputType="none"
+        android:layout_margin="12dp"
         android:layout_marginTop="20dp" />
 
     <EditText
@@ -40,6 +59,7 @@
         android:layout_height="50dp"
         android:hint="Phone Number"
         android:inputType="text"
+        android:layout_margin="12dp"
         android:layout_marginTop="20dp" />
 
     <EditText
@@ -48,6 +68,7 @@
         android:layout_height="50dp"
         android:hint="Age"
         android:inputType="text"
+        android:layout_margin="12dp"
         android:layout_marginTop="20dp" />
 
     <EditText
@@ -57,6 +78,7 @@
         android:text="choose date"
         android:focusable="false"
         android:inputType="none"
+        android:layout_margin="12dp"
         android:layout_marginTop="20dp"/>
 
 
@@ -64,6 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radiogp1"
+        android:layout_margin="12dp"
         android:layout_marginTop="10dp" >
 
         <RadioButton
@@ -92,6 +115,8 @@
             android:id="@+id/btn_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0C3B2E"
             android:text="Reset"
             android:layout_margin="5dp" />
 
@@ -99,11 +124,24 @@
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#0C3B2E"
             android:text="Submit"
             android:layout_margin="5dp" />
-
     </LinearLayout>
+      </LinearLayout>
 
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:background="#0C3B2E"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#FFBA00"
+        app:menu="@menu/nav_menu" />
 
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

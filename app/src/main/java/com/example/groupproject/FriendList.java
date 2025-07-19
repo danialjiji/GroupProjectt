@@ -218,7 +218,15 @@ public class FriendList extends AppCompatActivity
         if (id == R.id.nav_dashboard) {
             startActivity(new Intent(this, dashboard.class));
         } else if (id == R.id.nav_friends) {
-            //this page
+           // This class
+        } else if (id == R.id.nav_search) {
+            startActivity(new Intent(this, SearchActivity.class));
+        } else if (id == R.id.nav_addfriend) {
+            startActivity(new Intent(this, AddFriend.class));
+        } else if (id == R.id.nav_chart) {
+            startActivity(new Intent(this, ChartActivity.class));
+        } else if (id == R.id.nav_wheel) {
+            startActivity(new Intent(this, WheelActivity.class));
         }
 
         friendlist.closeDrawers();

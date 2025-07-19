@@ -1,59 +1,91 @@
 package com.example.groupproject;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.groupproject.Friend;
+import com.google.android.material.navigation.NavigationView;
 
-public class SearchActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SearchActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText searchName;
-    TextView friendsList;
     Button btnSearch;
+    RecyclerView recyclerFriends;
 
     DbHelper db;
+    List<Friend> friendList;
+    FriendAdapter adapter;
 
+    DrawerLayout searchfriend;
+    NavigationView navigationView;
+    ActionBarDrawerToggle drawerToggle;
+
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         searchName = findViewById(R.id.search_name);
-        friendsList = findViewById(R.id.friends_list);
         btnSearch = findViewById(R.id.btn_search);
+        recyclerFriends = findViewById(R.id.recycler_friends);
+
+        // Set toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Drawer setup
+        searchfriend = findViewById(R.id.friend_search);
+        navigationView = findViewById(R.id.navigation_view);
+        drawerToggle = new ActionBarDrawerToggle(this, searchfriend,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        searchfriend.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView.setNavigationItemSelectedListener(this);
 
         db = new DbHelper(this);
+        friendList = new ArrayList<>();
+        adapter = new FriendAdapter(friendList);
+
+        recyclerFriends.setLayoutManager(new LinearLayoutManager(this));
+        recyclerFriends.setAdapter(adapter);
 
         btnSearch.setOnClickListener(v -> {
-            // Get the search name from the EditText and trim any extra spaces
             String searchQuery = searchName.getText().toString().trim();
 
-            // Check if the search query is empty
             if (searchQuery.isEmpty()) {
-                Toast.makeText(SearchActivity.this, "Please enter a name to search.", Toast.LENGTH_SHORT).show();
-                return; // Exit if search input is empty
+                Toast.makeText(this, "Please enter a name to search.", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            // Get the readable database
+            friendList.clear();
             SQLiteDatabase database = db.getReadableDatabase();
 
-            // Define the query with LIKE for partial matching and case insensitivity
-            String query = "SELECT * FROM FRIENDS WHERE LOWER(fname) = LOWER(?)";
-            Cursor cursor = database.rawQuery(query, new String[]{searchQuery});
+            String query = "SELECT * FROM FRIENDS WHERE LOWER(fname) LIKE LOWER(?)";
+            Cursor cursor = database.rawQuery(query, new String[]{"%" + searchQuery + "%"});
 
-            // Create a StringBuilder to hold the search results
-            StringBuilder result = new StringBuilder();
-
-            // If cursor has data, process it
             if (cursor.moveToFirst()) {
                 do {
-                    // Get the friend's details from the cursor
                     String name = cursor.getString(cursor.getColumnIndexOrThrow("fname"));
                     String phone = cursor.getString(cursor.getColumnIndexOrThrow("fnumber"));
                     String email = cursor.getString(cursor.getColumnIndexOrThrow("femail"));
@@ -61,27 +93,43 @@ public class SearchActivity extends AppCompatActivity {
                     String gender = cursor.getString(cursor.getColumnIndexOrThrow("fgender"));
                     String dob = cursor.getString(cursor.getColumnIndexOrThrow("fdob"));
 
-                    // Append details for each friend
-                    result.append("Name: ").append(name)
-                            .append("\nPhone: ").append(phone)
-                            .append("\nEmail: ").append(email)
-                            .append("\nAge: ").append(age)
-                            .append("\nGender: ").append(gender)
-                            .append("\nBirthday: ").append(dob)
-                            .append("\n\n");
-
+                    friendList.add(new Friend(name, phone, email, age, gender, dob));
                 } while (cursor.moveToNext());
             } else {
-                // If no friends found, append a message
-                result.append("No friends found with that name.");
+                Toast.makeText(this, "No friends found.", Toast.LENGTH_SHORT).show();
             }
 
-            // Close the cursor and database to avoid memory leaks
             cursor.close();
             database.close();
 
-            // Set the search result to a TextView (or you can use a ListView/RecyclerView instead)
-            friendsList.setText(result.toString());
+            adapter.notifyDataSetChanged();
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_dashboard) {
+            startActivity(new Intent(this, dashboard.class));
+        } else if (id == R.id.nav_friends) {
+            startActivity(new Intent(this, FriendList.class));
+        } else if (id == R.id.nav_search) {
+            // this page
+        } else if (id == R.id.nav_addfriend) {
+            startActivity(new Intent(this, AddFriend.class));
+        } else if (id == R.id.nav_chart) {
+            startActivity(new Intent(this, ChartActivity.class));
+        } else if (id == R.id.nav_wheel) {
+            startActivity(new Intent(this, WheelActivity.class));
+        }
+
+        searchfriend.closeDrawers();
+        return true;
     }
 }

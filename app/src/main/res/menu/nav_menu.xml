@@ -9,5 +9,23 @@
         android:id="@+id/nav_friends"
         android:title="Friend List" />
 
+    <item
+        android:id="@+id/nav_search"
+        android:title="Search Friend" />
+
+    <item
+        android:id="@+id/nav_addfriend"
+        android:title="Add Friend" />
+
+    <item
+        android:id="@+id/nav_chart"
+        android:title="Report" />
+
+    <item
+        android:id="@+id/nav_wheel"
+        android:title="Wheel" />
+
+
+
 
 </menu>

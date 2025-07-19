@@ -1,40 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="20dp"
-    tools:context=".SearchActivity">
+    android:id="@+id/friend_search"
+    android:layout_height="match_parent">
+
+    <!-- Main content layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Search friend"
+            android:background="#0C3B2E"
+            app:titleTextColor="@android:color/white" />
+
 
     <EditText
+        android:layout_marginTop="10dp"
         android:id="@+id/search_name"
+        android:hint="Enter name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter name"/>
+        android:padding="10dp"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_search"
+        android:text="Search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
-        android:backgroundTint="@color/emeraldgreen"/>
+        android:backgroundTint="@color/emeraldgreen"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"/>
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_friends"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="List of Friends"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/friends_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textSize="15sp"/>
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        android:background="#0C3B2E"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#FFBA00"
+        app:menu="@menu/nav_menu" />
 
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

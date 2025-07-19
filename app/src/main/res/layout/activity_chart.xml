@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:id="@+id/chart_report"
     tools:context=".ChartActivity">
-    <!--comment -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Graph Overview"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginBottom="12dp"
-        android:background="@color/sagegreen"
-        android:textColor="@color/white"
-        android:padding="8dp"
-        android:gravity="center"
-        android:paddingTop="24dp"
-        android:layout_marginTop="24dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Report"
+            android:background="#0C3B2E"
+            app:titleTextColor="@android:color/white" />
+
+        <!--comment -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Graph Overview"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@color/sagegreen"
+            android:textColor="@color/white"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_marginTop="24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="18dp"
+            android:orientation="vertical">
 
     <TextView
         android:id="@+id/birthdayTextView"
@@ -33,7 +52,7 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginBottom="4dp"
-        android:background="@color/goldenyellow"
+        android:background="#FFBA00"
         android:textColor="@color/white"
         android:padding="8dp"/>
 
@@ -63,13 +82,32 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-d
+
     <Button
         android:id="@+id/downloadPdfBtn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Download Charts as PDF"
         android:textColor="@color/white"
+        android:layout_gravity="center"
         android:backgroundTint="@color/emeraldgreen"
         android:layout_marginTop="16dp" />
-</LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        android:background="#0C3B2E"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#FFBA00"
+        app:menu="@menu/nav_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

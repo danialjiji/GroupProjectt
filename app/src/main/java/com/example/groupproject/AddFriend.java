@@ -1,23 +1,32 @@
-/*package com.example.groupproject;
+package com.example.groupproject;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.app.DatePickerDialog;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.Calendar;
 
-public class AddFriend extends AppCompatActivity {
+public class AddFriend extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     EditText etFN, etFNum, etFage, etFDob, etFEmail;
     RadioGroup radiogp1;
@@ -27,14 +36,34 @@ public class AddFriend extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener onDateSetListener;
     DbHelper db;
 
+    DrawerLayout addfriend;
+    NavigationView navigationView;
+    ActionBarDrawerToggle drawerToggle;
+
     String fgender = "";
 
 
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
+
+        // Set toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Drawer setup
+        addfriend = findViewById(R.id.main_recyclerview);
+        navigationView = findViewById(R.id.navigation_view);
+        drawerToggle = new ActionBarDrawerToggle(this, addfriend,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        addfriend.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        navigationView.setNavigationItemSelectedListener(this);
 
         db = new DbHelper(this);
 
@@ -45,7 +74,6 @@ public class AddFriend extends AppCompatActivity {
         } else {
             Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show();
         }
-
 
 
         etFN = findViewById(R.id.et_fn);
@@ -116,9 +144,32 @@ public class AddFriend extends AppCompatActivity {
 
             }
         });
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
+        if (id == R.id.nav_dashboard) {
+            startActivity(new Intent(this, dashboard.class));
+        } else if (id == R.id.nav_friends) {
+            startActivity(new Intent(this, FriendList.class));
+        } else if (id == R.id.nav_search) {
+            startActivity(new Intent(this, SearchActivity.class));
+        } else if (id == R.id.nav_addfriend) {
+                //this page
+        } else if (id == R.id.nav_chart) {
+            startActivity(new Intent(this, ChartActivity.class));
+        } else if (id == R.id.nav_wheel) {
+            startActivity(new Intent(this, WheelActivity.class));
+        }
+
+        addfriend.closeDrawers();
+        return true;
     }
 }
-*/
