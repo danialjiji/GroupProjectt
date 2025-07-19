@@ -166,7 +166,7 @@ public class FriendList extends AppCompatActivity
         String name = names.get(groupPosition);
         List<String> friendDetails = details.get(name);
 
-        int friendID = Integer.parseInt(friendDetails.get(7)); // ID is at index 7
+        int friendID = Integer.parseInt(friendDetails.get(6)); // ID is at index 7
 
         Intent intent = new Intent(FriendList.this, UpdateFriend.class);
         intent.putExtra("friendsID", friendID);
