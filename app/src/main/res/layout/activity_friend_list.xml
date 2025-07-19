@@ -23,6 +23,30 @@
             android:background="#0C3B2E"
             app:titleTextColor="@android:color/white" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="List of Your Friends!"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@color/sagegreen"
+            android:textColor="@color/white"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Check you friends information here!"
+            android:textSize="14dp"
+            android:layout_marginTop="10dp"
+            />
+
+
         <!-- Friend List -->
         <ExpandableListView
             android:id="@+id/expandable_list"

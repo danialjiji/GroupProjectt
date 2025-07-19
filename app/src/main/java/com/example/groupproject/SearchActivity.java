@@ -30,7 +30,7 @@ public class SearchActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText searchName;
-    Button btnSearch;
+    Button btnSearch, btnReset;
     RecyclerView recyclerFriends;
 
     DbHelper db;
@@ -52,6 +52,7 @@ public class SearchActivity extends AppCompatActivity
 
         searchName = findViewById(R.id.search_name);
         btnSearch = findViewById(R.id.btn_search);
+        btnReset = findViewById(R.id.btn_reset);
         recyclerFriends = findViewById(R.id.recycler_friends);
 
         // Get data from intent
@@ -127,6 +128,12 @@ public class SearchActivity extends AppCompatActivity
             database.close();
 
             adapter.notifyDataSetChanged();
+        });
+
+        btnReset.setOnClickListener(v -> {
+            searchName.setText("");
+            friendList.clear();               // Clear the friend list
+            adapter.notifyDataSetChanged();   // Notify adapter of data change
         });
     }
 
