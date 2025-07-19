@@ -27,6 +27,8 @@ public class WheelActivity extends AppCompatActivity
     Button btnAdd, btnSpin, btnDelete;
     EditText textInput;
 
+    TextView winnertext;
+
     int currentUserId = -1;
     String username = "";
 
@@ -45,6 +47,7 @@ public class WheelActivity extends AppCompatActivity
         btnSpin = findViewById(R.id.btn_spin);
         textInput = findViewById(R.id.inputIdea);
         btnDelete = findViewById(R.id.btn_delete);
+        winnertext = findViewById(R.id.winnertext);
 
         ArrayList<String> items = new ArrayList<>();
 
@@ -110,6 +113,7 @@ public class WheelActivity extends AppCompatActivity
                 wheelView.spinToIndex(randomIndex);
 
                 wheelView.postDelayed(()->{
+                    winnertext.setText("Winner: " + items.get(randomIndex).toString());
                     Toast.makeText(this, "Winner: " + items.get(randomIndex).toString(), Toast.LENGTH_LONG).show();
                 },3500);
             }
