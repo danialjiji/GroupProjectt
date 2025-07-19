@@ -263,4 +263,19 @@ public class dashboard extends AppCompatActivity
         values.put("userid", currentUserId);
         dbHelper.getWritableDatabase().insert("TODOLIST", null, values);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Refresh friend count
+        int totalFriends = getTotalCount();
+        countfriend.setText(String.valueOf(totalFriends));
+
+        // Refresh birthday reminder
+        reminder.setText(getBirthdayReminder());
+
+        // Refresh to-do list
+        loadTodoList();
+    }
 }
