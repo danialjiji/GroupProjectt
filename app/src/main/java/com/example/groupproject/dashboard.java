@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.view.View;
 import android.widget.*;
 import com.example.groupproject.NavigationHelper;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -59,8 +58,8 @@ public class dashboard extends AppCompatActivity
 
         //login connect
         Intent intent = getIntent();
-        currentUserId = intent.getIntExtra("userId", -1); // Used in DB calls
-        username = intent.getStringExtra("username");
+        currentUserId = intent.getIntExtra("userID", -1); // Used in DB calls
+        String username = intent.getStringExtra("username"); // Display name
         // Display name
 
         if (currentUserId == -1) {
@@ -98,9 +97,8 @@ public class dashboard extends AppCompatActivity
 
 
         int totalFriends = getTotalCount();
-        countfriend.setText("Number of Friends: " + totalFriends);
+        countfriend.setText(String.valueOf(totalFriends));
         reminder.setText(getBirthdayReminder());
-
         loadTodoList();
 
         listViewTodo.setOnItemClickListener((parent, view, position, id) -> {

@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Login extends AppCompatActivity {
 
     EditText etUsername, etPassword;
-    Button btnLogin;
+    Button btnLogin, btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class Login extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
 
         btnLogin.setOnClickListener(v -> {
             String username = etUsername.getText().toString();
@@ -30,7 +31,7 @@ public class Login extends AppCompatActivity {
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Fix: Create instance of your DbHelper class
+
                 DbHelper dbHelper = new DbHelper(this);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -43,11 +44,11 @@ public class Login extends AppCompatActivity {
                     if (columnIndex != -1) {
                         int userId = cursor.getInt(columnIndex);
 
+                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, dashboard.class);
-                        intent.putExtra("userId", userId);
+                        intent.putExtra("userID", userId);
                         intent.putExtra("username", username);
                         startActivity(intent);
-                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         Toast.makeText(this, "Login Success, but failed to retrieve userID", Toast.LENGTH_SHORT).show();
@@ -56,10 +57,14 @@ public class Login extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 }
-
                 cursor.close();
-                db.close();
             }
         });
+
+        btnRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(Login.this, Register.class);
+            startActivity(intent);
+        });
+
     }
 }
