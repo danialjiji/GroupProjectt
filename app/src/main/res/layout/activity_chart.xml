@@ -22,27 +22,26 @@
             android:background="#0C3B2E"
             app:titleTextColor="@android:color/white" />
 
+        <!--comment -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Graph Overview"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@color/sagegreen"
+            android:textColor="@color/white"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_marginTop="24dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="18dp"
             android:orientation="vertical">
-
-    <!--comment -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Graph Overview"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginBottom="12dp"
-        android:background="@color/sagegreen"
-        android:textColor="@color/white"
-        android:padding="8dp"
-        android:gravity="center"
-        android:layout_marginTop="24dp"/>
-
 
     <TextView
         android:id="@+id/birthdayTextView"

@@ -1,5 +1,6 @@
 package com.example.groupproject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,6 +39,7 @@ public class SearchActivity extends AppCompatActivity
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
