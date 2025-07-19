@@ -279,12 +279,14 @@ public class DbHelper extends SQLiteOpenHelper {
     //code untuk birthday ikut bulan
     public Cursor getBirthdayCountPerMonth(int userID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT strftime('%m', " + COL_FDOB + ") AS month, COUNT(*) " +
+        String query = "SELECT SUBSTR(" + COL_FDOB + ", INSTR(" + COL_FDOB + ", '/') + 1, " +
+                "INSTR(SUBSTR(" + COL_FDOB + ", INSTR(" + COL_FDOB + ", '/') + 1), '/') - 1) AS month, COUNT(*) " +
                 "FROM " + TABLE_FRIENDS +
                 " WHERE " + COL_USER_ID + " = ?" +
-                " GROUP BY month ORDER BY month";
+                " GROUP BY month ORDER BY CAST(month AS INTEGER)";
         return db.rawQuery(query, new String[]{String.valueOf(userID)});
     }
+
 
     public int updateFriend(int friendID, String fname, String fnumber, String femail, int fage, String fdob, String fgender) {
         SQLiteDatabase db = this.getWritableDatabase();

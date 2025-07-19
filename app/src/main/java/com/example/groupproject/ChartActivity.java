@@ -54,6 +54,7 @@ public class ChartActivity extends AppCompatActivity
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
 
+    //header line 63 sampai 100
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
