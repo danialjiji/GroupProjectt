@@ -60,27 +60,25 @@ public class ChartActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        // Get data from intent
+        // Get intent data
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-        currentUserId = intent.getIntExtra("userID", -1); // ✔️ This is correct
+        currentUserId = intent.getIntExtra("userID", -1);
 
-        // use userId, not userid
-        if ( currentUserId == -1) {
+        if (currentUserId == -1) {
             Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        // Set toolbar
+        // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Drawer setup
+        // Navigation Drawer
         chartrep = findViewById(R.id.chart_report);
         navigationView = findViewById(R.id.navigation_view);
-        drawerToggle = new ActionBarDrawerToggle(this, chartrep,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this, chartrep, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         chartrep.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         if (getSupportActionBar() != null) {
@@ -88,12 +86,18 @@ public class ChartActivity extends AppCompatActivity
         }
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Update nav header with username
-        if (username != null && !username.isEmpty()) {
-            View headerView = navigationView.getHeaderView(0);
+        // SAFELY update nav header
+        View headerView = navigationView.getHeaderView(0);
+        if (headerView != null) {
             TextView navUsername = headerView.findViewById(R.id.nav_username);
-            navUsername.setText(username);
+            if (navUsername != null && username != null && !username.isEmpty()) {
+                navUsername.setText(username);
+            }
+        } else {
+            Toast.makeText(this, "Navigation header not loaded", Toast.LENGTH_SHORT).show();
         }
+
+
 
         db = new DbHelper(this);
         barChart = findViewById(R.id.bar_chart);
@@ -122,9 +126,20 @@ public class ChartActivity extends AppCompatActivity
         int[] monthCount = new int[12];
         Cursor cursor = db.getBirthdayCountPerMonth(currentUserId);
         while (cursor.moveToNext()) {
-            int month = Integer.parseInt(cursor.getString(0)) - 1;
+            String monthStr = cursor.getString(0);
             int count = cursor.getInt(1);
-            monthCount[month] = count;
+
+            if (monthStr != null && !monthStr.isEmpty()) {
+                try {
+                    int month = Integer.parseInt(monthStr) - 1;
+                    if (month >= 0 && month < 12) {
+                        monthCount[month] = count;
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    // Optionally log this or show a toast
+                }
+            }
         }
         cursor.close();
 
