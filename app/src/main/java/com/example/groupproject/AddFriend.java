@@ -92,13 +92,13 @@ public class AddFriend extends AppCompatActivity
         }
 
         db = new DbHelper(this);
-        int userId = getIntent().getIntExtra("userId", -1); // -1 is default if not found
+        /*int userId = getIntent().getIntExtra("userId", -1); // -1 is default if not found
 
         if (userId != -1) {
             // use userId as needed
         } else {
             Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
         etFN = findViewById(R.id.et_fn);
@@ -161,7 +161,7 @@ public class AddFriend extends AppCompatActivity
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
                 int fage = Integer.parseInt(fageStr);
-                db.insertFriend(fname, fnum, femail, fage, fdob, fgender, userId);
+                db.insertFriend(fname, fnum, femail, fage, fdob, fgender, currentUserId);
                 Toast.makeText(this, "Friend Added!", Toast.LENGTH_SHORT).show();
                 Intent intentToFriendList = new Intent(this, FriendList.class);
                 intentToFriendList.putExtra("username", username);
