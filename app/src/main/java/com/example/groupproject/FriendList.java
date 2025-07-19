@@ -69,33 +69,21 @@ public class FriendList extends AppCompatActivity
         myAdapter = new MyAdapter(this, names, details);
         expandableListView.setAdapter(myAdapter);
 
-
         expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             String name = names.get(groupPosition);
             List<String> friendDetails = details.get(name);
             String clickedItem = friendDetails.get(childPosition);
 
-            if (clickedItem.contains("Birthday")){
-                String phoneNumber = friendDetails.get(0).replace("Phone: ", "").replaceAll("[^\\d]", ""); // Only digits
-                sendBirthdayWish(phoneNumber, name);
+            if (clickedItem.contains("Birthday")) {
+                handleBirthdayClick(groupPosition);
                 return true;
 
             } else if (clickedItem.equals("Update")) {
-                int friendID = Integer.parseInt(friendDetails.get(7)); // index of friendID
-
-                Intent intent = new Intent(FriendList.this, UpdateFriend.class);
-                intent.putExtra("friendsID", friendID);
-                intent.putExtra("fname", name);
-                intent.putExtra("fnumber", friendDetails.get(0).replace("Phone: ", ""));
-                intent.putExtra("femail", friendDetails.get(1).replace("Email: ", ""));
-                intent.putExtra("fage", friendDetails.get(2).replace("Age: ", ""));
-                intent.putExtra("fgender", friendDetails.get(3).replace("Gender: ", ""));
-                intent.putExtra("fdob", friendDetails.get(4).replace("Birthday: ", ""));
-                intent.putExtra("userid", userid);
-                startActivity(intent);
+                handleUpdateClick(groupPosition);
                 return true;
+
             } else if (clickedItem.equals("Delete")) {
-                showDeleteDialog(name, groupPosition);
+                handleDeleteClick(groupPosition);
                 return true;
             }
 
@@ -103,16 +91,6 @@ public class FriendList extends AppCompatActivity
         });
     }
 
-    private void sendBirthdayWish(String phoneNumber, String friendName) {
-        String message = "Happy Birthday, " + friendName + "! 🎉 Wishing you a wonderful year ahead!";
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://wa.me/6" + phoneNumber + "?text=" + Uri.encode(message)));
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this, "WhatsApp not found on this device.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -146,10 +124,10 @@ public class FriendList extends AppCompatActivity
                 friendDetails.add("Email: " + email);
                 friendDetails.add("Age: " + age);
                 friendDetails.add("Gender: " + gender);
-                friendDetails.add("Birthday: " + dob);
-                friendDetails.add("Update");
-                friendDetails.add("Delete");
-                friendDetails.add(String.valueOf(friendID)); // index 7
+                friendDetails.add("Birthday: " + dob); // keep for display only, not for button
+                friendDetails.add("Actions"); // all 3 buttons shown here
+                friendDetails.add(String.valueOf(friendID));
+
 
                 details.put(name, friendDetails);
             } while (cursor.moveToNext());
@@ -158,6 +136,7 @@ public class FriendList extends AppCompatActivity
         cursor.close();
         database.close();
     }
+
 
     private void showDeleteDialog(String name, int position) {
         new AlertDialog.Builder(this)
@@ -206,6 +185,22 @@ public class FriendList extends AppCompatActivity
         showDeleteDialog(name, groupPosition);
     }
 
+    public void handleBirthdayClick(int groupPosition) {
+        String name = names.get(groupPosition);
+        List<String> friendDetails = details.get(name);
+        String phone = friendDetails.get(0).replace("Phone: ", "").replaceAll("[^\\d]", ""); // digits only
+        String message = "Happy Birthday, " + name + "! 🎉 Wishing you a wonderful year ahead!";
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://wa.me/6" + phone + "?text=" + Uri.encode(message)));
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "WhatsApp not found on this device.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
@@ -218,15 +213,7 @@ public class FriendList extends AppCompatActivity
         if (id == R.id.nav_dashboard) {
             startActivity(new Intent(this, dashboard.class));
         } else if (id == R.id.nav_friends) {
-           // This class
-        } else if (id == R.id.nav_search) {
-            startActivity(new Intent(this, SearchActivity.class));
-        } else if (id == R.id.nav_addfriend) {
-            startActivity(new Intent(this, AddFriend.class));
-        } else if (id == R.id.nav_chart) {
-            startActivity(new Intent(this, ChartActivity.class));
-        } else if (id == R.id.nav_wheel) {
-            startActivity(new Intent(this, WheelActivity.class));
+            //this page
         }
 
         friendlist.closeDrawers();

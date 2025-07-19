@@ -34,7 +34,6 @@ public class MyAdapter extends BaseExpandableListAdapter {
         return (children != null) ? children.size() : 0;
     }
 
-
     @Override
     public Object getGroup(int groupPosition) {
         return parentList.get(groupPosition);
@@ -45,7 +44,6 @@ public class MyAdapter extends BaseExpandableListAdapter {
         List<String> children = childMap.get(parentList.get(groupPosition));
         return (children != null && childPosition < children.size()) ? children.get(childPosition) : null;
     }
-
 
     @Override
     public long getGroupId(int groupPosition) {
@@ -62,7 +60,6 @@ public class MyAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    // Use parent.xml for group view (name)
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String groupTitle = (String) getGroup(groupPosition);
@@ -72,13 +69,12 @@ public class MyAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.parent, parent, false);
         }
 
-        TextView groupText = convertView.findViewById(R.id.parentList); // Ensure the ID matches your parent.xml
+        TextView groupText = convertView.findViewById(R.id.parentList);
         groupText.setText(groupTitle);
 
         return convertView;
     }
 
-    // Use child_list.xml for child view (details)
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent) {
@@ -94,14 +90,20 @@ public class MyAdapter extends BaseExpandableListAdapter {
         LinearLayout buttonLayout = convertView.findViewById(R.id.buttonLayout);
         View btnUpdate = convertView.findViewById(R.id.btnUpdate);
         View btnDelete = convertView.findViewById(R.id.btnDelete);
+        View btnBirthday = convertView.findViewById(R.id.btnBirthday);
 
-        // Hide all views first
+        // Reset all views to GONE first
         childText.setVisibility(View.GONE);
         buttonLayout.setVisibility(View.GONE);
+        btnUpdate.setVisibility(View.GONE);
+        btnDelete.setVisibility(View.GONE);
+        btnBirthday.setVisibility(View.GONE);
 
-        // Show button layout only once, when "Update"
-        if (childItem.equals("Update")) {
+        if (childItem.equals("Actions")) {
             buttonLayout.setVisibility(View.VISIBLE);
+            btnUpdate.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
+            btnBirthday.setVisibility(View.VISIBLE);
 
             btnUpdate.setOnClickListener(v -> {
                 if (context instanceof FriendList) {
@@ -115,15 +117,20 @@ public class MyAdapter extends BaseExpandableListAdapter {
                 }
             });
 
-        } else if (!childItem.equals("Delete") && !childItem.matches("\\d+")) {
-            // Show regular detail
+            btnBirthday.setOnClickListener(v -> {
+                if (context instanceof FriendList) {
+                    ((FriendList) context).handleBirthdayClick(groupPosition);
+                }
+            });
+
+        } else if (!childItem.matches("\\d+")) {
             childText.setText(childItem);
             childText.setVisibility(View.VISIBLE);
         }
 
+
         return convertView;
     }
-
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
