@@ -120,9 +120,9 @@ public class ChartActivity extends AppCompatActivity
 
     private void setupBarChart(int[] colors) {
         ArrayList<BarEntry> barEntries = new ArrayList<>();
-        ArrayList<String> monthLabels = new ArrayList<>(
-                Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"));
+        ArrayList<String> monthLabels = new ArrayList<>(Arrays.asList(
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"));
 
         int[] monthCount = new int[12];
         Cursor cursor = db.getBirthdayCountPerMonth(currentUserId);
@@ -130,15 +130,15 @@ public class ChartActivity extends AppCompatActivity
             String monthStr = cursor.getString(0);
             int count = cursor.getInt(1);
 
+            // ✅ FIX: Check for null and parse safely
             if (monthStr != null && !monthStr.isEmpty()) {
                 try {
-                    int month = Integer.parseInt(monthStr) - 1;
+                    int month = Integer.parseInt(monthStr.trim()) - 1;
                     if (month >= 0 && month < 12) {
                         monthCount[month] = count;
                     }
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    // Optionally log this or show a toast
+                    e.printStackTrace(); // ✅ FIX: avoid crash from bad data
                 }
             }
         }
@@ -184,7 +184,6 @@ public class ChartActivity extends AppCompatActivity
 
     private void generatePdf() {
         try {
-            // Prepare summary text
             StringBuilder summaryText = new StringBuilder();
             summaryText.append("Birthday Count per Month:\n");
 
@@ -194,9 +193,20 @@ public class ChartActivity extends AppCompatActivity
             int[] monthCount = new int[12];
             Cursor monthCursor = db.getBirthdayCountPerMonth(currentUserId);
             while (monthCursor.moveToNext()) {
-                int monthIndex = Integer.parseInt(monthCursor.getString(0)) - 1;
+                String monthStr = monthCursor.getString(0);
                 int count = monthCursor.getInt(1);
-                monthCount[monthIndex] = count;
+
+                // ✅ FIX: Again safe parse with null-check
+                if (monthStr != null && !monthStr.isEmpty()) {
+                    try {
+                        int monthIndex = Integer.parseInt(monthStr.trim()) - 1;
+                        if (monthIndex >= 0 && monthIndex < 12) {
+                            monthCount[monthIndex] = count;
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(); // ✅ FIX
+                    }
+                }
             }
             monthCursor.close();
 
@@ -213,22 +223,18 @@ public class ChartActivity extends AppCompatActivity
             }
             genderCursor.close();
 
-            // Set PDF page size
-            int pageWidth = 595;  // A4 size width in points
-            int pageHeight = 842; // A4 size height in points
-
+            // ✅ FIX: PDF creation only with summary — no chart image required
+            int pageWidth = 595, pageHeight = 842;
             PdfDocument document = new PdfDocument();
             PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create();
             PdfDocument.Page page = document.startPage(pageInfo);
             Canvas canvas = page.getCanvas();
 
-            // Draw text
             Paint textPaint = new Paint();
             textPaint.setColor(Color.BLACK);
             textPaint.setTextSize(28f);
 
-            int x = 40;
-            int y = 60;
+            int x = 40, y = 60;
             for (String line : summaryText.toString().split("\n")) {
                 canvas.drawText(line, x, y, textPaint);
                 y += 40;
@@ -236,8 +242,6 @@ public class ChartActivity extends AppCompatActivity
 
             document.finishPage(page);
 
-            // Save file
-            //File downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
             File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File chartsDir = new File(downloadsDir, "Charts");
             if (!chartsDir.exists()) chartsDir.mkdirs();
@@ -248,10 +252,8 @@ public class ChartActivity extends AppCompatActivity
             document.close();
             out.close();
 
-            MediaScannerConnection.scanFile(
-                    this,
-                    new String[]{file.getAbsolutePath()},
-                    new String[]{"application/pdf"},
+            // ✅ FIX: Scan for visibility in file manager
+            MediaScannerConnection.scanFile(this, new String[]{file.getAbsolutePath()}, new String[]{"application/pdf"},
                     (path, uri) -> Toast.makeText(this, "PDF saved: " + path, Toast.LENGTH_LONG).show()
             );
 

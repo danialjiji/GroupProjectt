@@ -189,8 +189,6 @@ public class dashboard extends AppCompatActivity
 
     private String getBirthdayReminder() {
         Calendar today = Calendar.getInstance();
-        int thisMonth = today.get(Calendar.MONTH) + 1;
-        int todayDay = today.get(Calendar.DAY_OF_MONTH);
 
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
                 "SELECT fname, fdob FROM FRIENDS WHERE userid = ?",
@@ -202,19 +200,54 @@ public class dashboard extends AppCompatActivity
         while (cursor.moveToNext()) {
             String name = cursor.getString(0);
             String dob = cursor.getString(1);
-            if (dob != null && dob.length() >= 10) {
-                int dobMonth = Integer.parseInt(dob.substring(5, 7));
-                int dobDay = Integer.parseInt(dob.substring(8, 10));
 
-                if (dobMonth == thisMonth) {
-                    if (dobDay == todayDay) {
-                        birthdayMessages.add(name + "'s birthday today!");
-                    } else if (dobDay > todayDay && dobDay - todayDay <= 7) {
-                        birthdayMessages.add(name + "'s birthday on " + dobDay + "!");
-                    }
+            if (dob == null || dob.isEmpty()) continue;
+
+            // Normalize delimiters
+            dob = dob.replace('/', '-');
+
+            String[] parts = dob.split("-");
+
+            int day, month;
+
+            try {
+                if (parts.length != 3) continue;
+
+                if (parts[0].length() == 4) {
+                    // Format: YYYY-MM-DD
+                    month = Integer.parseInt(parts[1]) - 1;
+                    day = Integer.parseInt(parts[2]);
+                } else if (parts[2].length() == 4) {
+                    // Format: DD-MM-YYYY
+                    day = Integer.parseInt(parts[0]);
+                    month = Integer.parseInt(parts[1]) - 1;
+                } else {
+                    continue; // Unknown format
                 }
+
+                Calendar birthday = Calendar.getInstance();
+                birthday.set(Calendar.MONTH, month);
+                birthday.set(Calendar.DAY_OF_MONTH, day);
+                birthday.set(Calendar.YEAR, today.get(Calendar.YEAR));
+
+                if (birthday.before(today)) {
+                    birthday.add(Calendar.YEAR, 1);
+                }
+
+                long diffMillis = birthday.getTimeInMillis() - today.getTimeInMillis();
+                long diffDays = diffMillis / (24 * 60 * 60 * 1000);
+
+                if (diffDays == 0) {
+                    birthdayMessages.add(name + "'s birthday is today!");
+                } else if (diffDays <= 10) {
+                    birthdayMessages.add(name + "'s birthday is in " + diffDays + " day(s)!");
+                }
+
+            } catch (Exception e) {
+                Log.e("BIRTHDAY_PARSER", "Error parsing dob: " + dob, e);
             }
         }
+
         cursor.close();
 
         if (birthdayMessages.isEmpty()) {
@@ -224,9 +257,11 @@ public class dashboard extends AppCompatActivity
             for (String msg : birthdayMessages) {
                 sb.append(msg).append("\n");
             }
-            return sb.toString().trim(); // remove last newline
+            return sb.toString().trim();
         }
     }
+
+
 
 
     private void loadTodoList() {
@@ -274,6 +309,7 @@ public class dashboard extends AppCompatActivity
 
         // Refresh birthday reminder
         reminder.setText(getBirthdayReminder());
+
 
         // Refresh to-do list
         loadTodoList();

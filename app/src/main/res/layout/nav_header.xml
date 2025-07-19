@@ -18,7 +18,7 @@
             android:id="@+id/profile_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_person"
+            android:src="@drawable/baseline_person_24"
             android:contentDescription="Profile Image"
             app:tint="#FFFFFF" />
 

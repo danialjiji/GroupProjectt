@@ -57,12 +57,6 @@ public class AddFriend extends AppCompatActivity
         username = intent.getStringExtra("username");
         currentUserId = intent.getIntExtra("userID", -1); // ✔️ This is correct
 
-        if (currentUserId == -1) {
-            Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,11 +64,6 @@ public class AddFriend extends AppCompatActivity
         // Drawer setup
         addfriend = findViewById(R.id.main_recyclerview);
         navigationView = findViewById(R.id.navigation_view);
-        Menu menu = navigationView.getMenu();
-        MenuItem item = menu.findItem(R.id.nav_addfriend);
-        if (item != null) {
-            item.setChecked(true);
-        }
         drawerToggle = new ActionBarDrawerToggle(this, addfriend,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         addfriend.addDrawerListener(drawerToggle);
@@ -92,13 +81,6 @@ public class AddFriend extends AppCompatActivity
         }
 
         db = new DbHelper(this);
-        /*int userId = getIntent().getIntExtra("userId", -1); // -1 is default if not found
-
-        if (userId != -1) {
-            // use userId as needed
-        } else {
-            Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show();
-        }*/
 
 
         etFN = findViewById(R.id.et_fn);

@@ -54,13 +54,6 @@ public class FriendList extends AppCompatActivity
         currentUserId = intent.getIntExtra("userID", -1);
         userid = currentUserId;
 
-        if (currentUserId == -1) {
-            Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-        Toast.makeText(this, "Received userID: " + userid, Toast.LENGTH_LONG).show();
-
 
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
