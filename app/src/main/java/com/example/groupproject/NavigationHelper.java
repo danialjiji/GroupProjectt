@@ -7,7 +7,7 @@ public class NavigationHelper {
     public static void goTo(Context context, Class<?> targetClass, String username, int userId) {
         Intent intent = new Intent(context, targetClass);
         intent.putExtra("username", username);
-        intent.putExtra("userId", userId);
+        intent.putExtra("userID", userId);
         context.startActivity(intent);
     }
 }
