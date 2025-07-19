@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,9 @@ public class SearchActivity extends AppCompatActivity
     List<Friend> friendList;
     FriendAdapter adapter;
 
+    int currentUserId = -1;
+    String username = "";
+
     DrawerLayout searchfriend;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
@@ -49,6 +54,11 @@ public class SearchActivity extends AppCompatActivity
         btnSearch = findViewById(R.id.btn_search);
         recyclerFriends = findViewById(R.id.recycler_friends);
 
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        currentUserId = intent.getIntExtra("userId", -1);
+
+
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,6 +72,13 @@ public class SearchActivity extends AppCompatActivity
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Update nav header with username
+        if (username != null && !username.isEmpty()) {
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUsername = headerView.findViewById(R.id.nav_username);
+            navUsername.setText(username);
+        }
 
         db = new DbHelper(this);
         friendList = new ArrayList<>();
@@ -116,17 +133,32 @@ public class SearchActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            startActivity(new Intent(this, dashboard.class));
+            Intent i = new Intent(this, dashboard.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
-            startActivity(new Intent(this, FriendList.class));
+            Intent i = new Intent(this, FriendList.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_search) {
-            // this page
+            // Already in WheelActivity, do nothing
         } else if (id == R.id.nav_addfriend) {
-            startActivity(new Intent(this, AddFriend.class));
+            Intent i = new Intent(this, AddFriend.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_chart) {
-            startActivity(new Intent(this, ChartActivity.class));
+            Intent i = new Intent(this, ChartActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_wheel) {
-            startActivity(new Intent(this, WheelActivity.class));
+            Intent i = new Intent(this, WheelActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         }
 
         searchfriend.closeDrawers();

@@ -11,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +41,8 @@ public class AddFriend extends AppCompatActivity
     DrawerLayout addfriend;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
-
+    int currentUserId = -1;
+    String username = "";
     String fgender = "";
 
 
@@ -49,6 +52,11 @@ public class AddFriend extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
 
+        // Get username and userId from intent
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        currentUserId = intent.getIntExtra("userId", -1);
+
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,6 +64,11 @@ public class AddFriend extends AppCompatActivity
         // Drawer setup
         addfriend = findViewById(R.id.main_recyclerview);
         navigationView = findViewById(R.id.navigation_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem item = menu.findItem(R.id.nav_addfriend);
+        if (item != null) {
+            item.setChecked(true);
+        }
         drawerToggle = new ActionBarDrawerToggle(this, addfriend,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         addfriend.addDrawerListener(drawerToggle);
@@ -64,6 +77,15 @@ public class AddFriend extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        // Update Navigation Drawer Header Username
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = headerView.findViewById(R.id.nav_username);
+
+        if (username != null && navUsername != null) {
+            navUsername.setText(username);
+        }
 
         db = new DbHelper(this);
 
@@ -138,9 +160,11 @@ public class AddFriend extends AppCompatActivity
                 int fage = Integer.parseInt(fageStr);
                 db.insertFriend(fname, fnum, femail, fage, fdob, fgender, userId);
                 Toast.makeText(this, "Friend Added!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, FriendList.class);
-                intent.putExtra("userid", 1);
-                startActivity(intent);
+                Intent intentToFriendList = new Intent(this, FriendList.class);
+                intentToFriendList.putExtra("username", username);
+                intentToFriendList.putExtra("userId", currentUserId);
+                startActivity(intentToFriendList);
+                finish();
 
             }
         });
@@ -156,17 +180,32 @@ public class AddFriend extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            startActivity(new Intent(this, dashboard.class));
+            Intent i = new Intent(this, dashboard.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
-            startActivity(new Intent(this, FriendList.class));
+            Intent i = new Intent(this, FriendList.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_search) {
-            startActivity(new Intent(this, SearchActivity.class));
+            Intent i = new Intent(this, SearchActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_addfriend) {
-                //this page
+            // Already in WheelActivity, do nothing
         } else if (id == R.id.nav_chart) {
-            startActivity(new Intent(this, ChartActivity.class));
+            Intent i = new Intent(this, ChartActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_wheel) {
-            startActivity(new Intent(this, WheelActivity.class));
+            Intent i = new Intent(this, WheelActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         }
 
         addfriend.closeDrawers();

@@ -12,4 +12,6 @@
     <color name="sagegreen">#6D9773</color>
     <color name="white">#FDFDFD</color>
     <color name="grey">#DEDEDE</color>
+    <color name="nav_item_highlight">#FFBB33</color> <!-- Replace with your color -->
+
 </resources>

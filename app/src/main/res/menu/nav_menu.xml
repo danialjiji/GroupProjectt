@@ -11,11 +11,13 @@
 
     <item
         android:id="@+id/nav_search"
-        android:title="Search Friend" />
+        android:title="Search Friend"
+        android:checkable="true"/>
 
     <item
         android:id="@+id/nav_addfriend"
-        android:title="Add Friend" />
+        android:title="Add Friend"
+        android:checkable="true" />
 
     <item
         android:id="@+id/nav_chart"

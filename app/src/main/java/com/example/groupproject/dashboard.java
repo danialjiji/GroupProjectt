@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.view.View;
 import android.widget.*;
+import com.example.groupproject.NavigationHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -35,6 +36,7 @@ public class dashboard extends AppCompatActivity
 
     DbHelper dbHelper;
     int currentUserId = -1;
+    String username = "";
 
     ArrayList<String> todoList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
@@ -58,7 +60,8 @@ public class dashboard extends AppCompatActivity
         //login connect
         Intent intent = getIntent();
         currentUserId = intent.getIntExtra("userId", -1); // Used in DB calls
-        String username = intent.getStringExtra("username"); // Display name
+        username = intent.getStringExtra("username");
+        // Display name
 
         if (currentUserId == -1) {
             Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
@@ -74,8 +77,8 @@ public class dashboard extends AppCompatActivity
         //Navigation part
         dashboard = findViewById(R.id.dashboard);
         navigationView = findViewById(R.id.navigation_view);
-        // Set the toolbar as the action bar
         setSupportActionBar(findViewById(R.id.toolbar));
+
         //setup drawer
         drawerToggle = new ActionBarDrawerToggle(this, dashboard,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -137,19 +140,20 @@ public class dashboard extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-       if (id == R.id.nav_dashboard) {
-            // Already here
+        if (id == R.id.nav_dashboard) {
+            // already here
         } else if (id == R.id.nav_friends) {
-            startActivity(new Intent(this, FriendList.class));
+            NavigationHelper.goTo(this, FriendList.class, username, currentUserId);
         } else if (id == R.id.nav_search) {
-           startActivity(new Intent(this, SearchActivity.class));
-       } else if (id == R.id.nav_addfriend) {
-           startActivity(new Intent(this, AddFriend.class));
-       } else if (id == R.id.nav_chart) {
-           startActivity(new Intent(this, ChartActivity.class));
-       } else if (id == R.id.nav_wheel) {
-           startActivity(new Intent(this, WheelActivity.class));
-       }
+            NavigationHelper.goTo(this, SearchActivity.class, username, currentUserId);
+        } else if (id == R.id.nav_addfriend) {
+            NavigationHelper.goTo(this, AddFriend.class, username, currentUserId);
+        } else if (id == R.id.nav_chart) {
+            NavigationHelper.goTo(this, ChartActivity.class, username, currentUserId);
+        } else if (id == R.id.nav_wheel) {
+            NavigationHelper.goTo(this, WheelActivity.class, username, currentUserId);
+        }
+
 
         dashboard.closeDrawers();
         return true;
@@ -246,21 +250,6 @@ public class dashboard extends AppCompatActivity
         listViewTodo.setAdapter(arrayAdapter);
 
     }
-
- /*   private String getUsernameFromDb(int userId) {
-        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
-                "SELECT name FROM USER WHERE id = ?", new String[]{String.valueOf(userId)}
-        );
-
-        if (cursor.moveToFirst()) {
-            String name = cursor.getString(0);
-            cursor.close();
-            return name;
-        }
-
-        cursor.close();
-        return "User";
-    }*/
 
 
     // Insert a new to-do item into DB

@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,7 +47,8 @@ public class ChartActivity extends AppCompatActivity
     PieChart pieChart;
     Button downloadPdfBtn;
     DbHelper db;
-    int currentUserId = 1;
+    int currentUserId = -1;
+    String username = "";
 
     DrawerLayout chartrep;
     NavigationView navigationView;
@@ -57,6 +59,11 @@ public class ChartActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        currentUserId = intent.getIntExtra("userId", -1);
+
 
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,6 +80,13 @@ public class ChartActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Update nav header with username
+        if (username != null && !username.isEmpty()) {
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUsername = headerView.findViewById(R.id.nav_username);
+            navUsername.setText(username);
+        }
 
         db = new DbHelper(this);
         barChart = findViewById(R.id.bar_chart);
@@ -247,17 +261,32 @@ public class ChartActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            startActivity(new Intent(this, dashboard.class));
+            Intent i = new Intent(this, dashboard.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
-            startActivity(new Intent(this, FriendList.class));
+            Intent i = new Intent(this, FriendList.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_search) {
-            startActivity(new Intent(this, SearchActivity.class));
+            Intent i = new Intent(this, SearchActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_addfriend) {
-            startActivity(new Intent(this, AddFriend.class));
+            Intent i = new Intent(this, AddFriend.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_chart) {
-          // this page
+            // Already in WheelActivity, do nothing
         } else if (id == R.id.nav_wheel) {
-            startActivity(new Intent(this, WheelActivity.class));
+            Intent i = new Intent(this, WheelActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         }
 
         chartrep.closeDrawers();

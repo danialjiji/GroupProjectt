@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,13 +20,15 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-
 public class WheelActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     WheelView wheelView;
     Button btnAdd, btnSpin, btnDelete;
     EditText textInput;
+
+    int currentUserId = -1;
+    String username = "";
 
     DrawerLayout wheel;
     NavigationView navigationView;
@@ -48,6 +52,10 @@ public class WheelActivity extends AppCompatActivity
         //Arrays.asList("Leeseo", "Wonyoung", "Liz", "Gaeul", "Yujin", "Rei");
         //wheelView.setItems(dummyItems);
 
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        currentUserId = intent.getIntExtra("userId", -1);
+
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,6 +72,14 @@ public class WheelActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Update nav header with username
+        if (username != null && !username.isEmpty()) {
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUsername = headerView.findViewById(R.id.nav_username);
+            navUsername.setText(username);
+        }
+
 
         btnDelete.setOnClickListener(v -> {
             items.clear();
@@ -103,20 +119,36 @@ public class WheelActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            startActivity(new Intent(this, dashboard.class));
+            Intent i = new Intent(this, dashboard.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
-            startActivity(new Intent(this, FriendList.class));
+            Intent i = new Intent(this, FriendList.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_search) {
-            startActivity(new Intent(this, SearchActivity.class));
+            Intent i = new Intent(this, SearchActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_addfriend) {
-            startActivity(new Intent(this, AddFriend.class));
+            Intent i = new Intent(this, AddFriend.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_chart) {
-            startActivity(new Intent(this, ChartActivity.class));
+            Intent i = new Intent(this, ChartActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("userId", currentUserId);
+            startActivity(i);
         } else if (id == R.id.nav_wheel) {
-
+            // Already in WheelActivity, do nothing
         }
 
         wheel.closeDrawers();
         return true;
     }
+
 }
