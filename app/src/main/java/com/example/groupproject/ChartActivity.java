@@ -214,7 +214,8 @@ public class ChartActivity extends AppCompatActivity
             document.finishPage(page);
 
             // Save file
-            File downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            //File downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File chartsDir = new File(downloadsDir, "Charts");
             if (!chartsDir.exists()) chartsDir.mkdirs();
 
