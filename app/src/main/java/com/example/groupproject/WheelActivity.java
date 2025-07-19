@@ -68,6 +68,7 @@ public class WheelActivity extends AppCompatActivity
         btnDelete.setOnClickListener(v -> {
             items.clear();
             wheelView.setItems(new ArrayList<>());
+            Toast.makeText(WheelActivity.this, "All items are deleted", Toast.LENGTH_SHORT).show();
         });
 
         btnAdd.setOnClickListener(v -> {
@@ -77,13 +78,17 @@ public class WheelActivity extends AppCompatActivity
         });
 
         btnSpin.setOnClickListener(v -> {
-            int randomIndex = (int)(Math.random() * items.size());
-            wheelView.spinToIndex(randomIndex);
 
-            wheelView.postDelayed(()->{
-                Toast.makeText(this, "Winner: " + items.get(randomIndex).toString(), Toast.LENGTH_LONG).show();
-            },3500);
+            if(textInput.getText().toString().isEmpty() && items.isEmpty()){
+                Toast.makeText(WheelActivity.this, "Please enter any input", Toast.LENGTH_SHORT).show();
+            }else{
+                int randomIndex = (int)(Math.random() * items.size());
+                wheelView.spinToIndex(randomIndex);
 
+                wheelView.postDelayed(()->{
+                    Toast.makeText(this, "Winner: " + items.get(randomIndex).toString(), Toast.LENGTH_LONG).show();
+                },3500);
+            }
         });
 
     }
