@@ -45,6 +45,7 @@ public class Login extends AppCompatActivity {
 
                         Intent intent = new Intent(Login.this, dashboard.class);
                         intent.putExtra("userId", userId);
+                        intent.putExtra("username", username);
                         startActivity(intent);
                         Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
                         finish();

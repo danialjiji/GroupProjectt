@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ public class dashboard extends AppCompatActivity
     ListView listViewTodo;
 
     DbHelper dbHelper;
-    int currentUserId = 1;
+    int currentUserId = -1;
 
     ArrayList<String> todoList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
@@ -44,23 +45,6 @@ public class dashboard extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        dashboard = findViewById(R.id.dashboard);
-        navigationView = findViewById(R.id.navigation_view);
-
-        // Set the toolbar as the action bar
-        setSupportActionBar(findViewById(R.id.toolbar));
-
-        //setup drawer
-        drawerToggle = new ActionBarDrawerToggle(this, dashboard,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        dashboard.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        navigationView.setNavigationItemSelectedListener(this);
-
         //declare ui
         countfriend = findViewById(R.id.countfriend);
         reminder = findViewById(R.id.reminder);
@@ -69,11 +53,45 @@ public class dashboard extends AppCompatActivity
         listViewTodo = findViewById(R.id.listViewTodo);
         textGreeting = findViewById(R.id.textGreeting);
 
-        //greeting user
-        String username = getIntent().getStringExtra("username");
-        textGreeting.setText("Hi, " + username + "!");
-
         dbHelper = new DbHelper(this);
+
+        //login connect
+        Intent intent = getIntent();
+        currentUserId = intent.getIntExtra("userId", -1); // Used in DB calls
+        String username = intent.getStringExtra("username"); // Display name
+
+        if (currentUserId == -1) {
+            Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
+            finish(); // Exit the activity to prevent further issues
+            return;
+        }
+        if (username != null) {
+            textGreeting.setText("Hi, " + username + "!");
+        } else {
+            textGreeting.setText("Hi there!");
+        }
+
+        //Navigation part
+        dashboard = findViewById(R.id.dashboard);
+        navigationView = findViewById(R.id.navigation_view);
+        // Set the toolbar as the action bar
+        setSupportActionBar(findViewById(R.id.toolbar));
+        //setup drawer
+        drawerToggle = new ActionBarDrawerToggle(this, dashboard,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        dashboard.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //user navigation part
+        if (username != null && !username.isEmpty()) {
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUsername = headerView.findViewById(R.id.nav_username);
+            navUsername.setText(username);
+        }
 
 
         int totalFriends = getTotalCount();
