@@ -31,7 +31,4 @@
         android:title="Wheel"
         android:checkable="true"/>
 
-
-
-
 </menu>
