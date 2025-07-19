@@ -54,10 +54,17 @@ public class SearchActivity extends AppCompatActivity
         btnSearch = findViewById(R.id.btn_search);
         recyclerFriends = findViewById(R.id.recycler_friends);
 
+        // Get data from intent
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-        currentUserId = intent.getIntExtra("userId", -1);
+        currentUserId = intent.getIntExtra("userID", -1); // ✔️ This is correct
 
+        // use userId, not userid
+        if ( currentUserId == -1) {
+            Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -130,34 +137,26 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent i = null;
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            Intent i = new Intent(this, dashboard.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, dashboard.class);
         } else if (id == R.id.nav_friends) {
-            Intent i = new Intent(this, FriendList.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, FriendList.class);
         } else if (id == R.id.nav_search) {
-            // Already in WheelActivity, do nothing
+            i = new Intent(this, SearchActivity.class);
         } else if (id == R.id.nav_addfriend) {
-            Intent i = new Intent(this, AddFriend.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, AddFriend.class);
         } else if (id == R.id.nav_chart) {
-            Intent i = new Intent(this, ChartActivity.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, ChartActivity.class);
         } else if (id == R.id.nav_wheel) {
-            Intent i = new Intent(this, WheelActivity.class);
+            i = new Intent(this, WheelActivity.class);
+        }
+
+        if (i != null) {
+            i.putExtra("userID", currentUserId);
             i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
             startActivity(i);
         }
 

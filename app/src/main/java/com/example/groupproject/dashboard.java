@@ -54,19 +54,16 @@ public class dashboard extends AppCompatActivity
         listViewTodo = findViewById(R.id.listViewTodo);
         textGreeting = findViewById(R.id.textGreeting);
 
-        dbHelper = new DbHelper(this);
-
-        //login connect
         Intent intent = getIntent();
-        currentUserId = intent.getIntExtra("userID", -1); // Used in DB calls
-        String username = intent.getStringExtra("username"); // Display name
-        // Display name
+        username = intent.getStringExtra("username");
+        currentUserId = intent.getIntExtra("userID", -1);
 
-        if (currentUserId == -1) {
-            Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
-            finish(); // Exit the activity to prevent further issues
+        if (username == null || currentUserId == -1) {
+            Toast.makeText(this, "User not recognized", Toast.LENGTH_SHORT).show();
+            finish();  // Prevent issues
             return;
         }
+
         if (username != null) {
             textGreeting.setText("Hi, " + username + "!");
         } else {
@@ -95,6 +92,7 @@ public class dashboard extends AppCompatActivity
             navUsername.setText(username);
         }
 
+        dbHelper = new DbHelper(this);
 
         int totalFriends = getTotalCount();
         countfriend.setText(String.valueOf(totalFriends));
@@ -138,20 +136,27 @@ public class dashboard extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+        Intent i = null;
+
         if (id == R.id.nav_dashboard) {
-            // already here
+            // Already on dashboard
         } else if (id == R.id.nav_friends) {
-            NavigationHelper.goTo(this, FriendList.class, username, currentUserId);
+            i = new Intent(this, FriendList.class);
         } else if (id == R.id.nav_search) {
-            NavigationHelper.goTo(this, SearchActivity.class, username, currentUserId);
+            i = new Intent(this, SearchActivity.class);
         } else if (id == R.id.nav_addfriend) {
-            NavigationHelper.goTo(this, AddFriend.class, username, currentUserId);
+            i = new Intent(this, AddFriend.class);
         } else if (id == R.id.nav_chart) {
-            NavigationHelper.goTo(this, ChartActivity.class, username, currentUserId);
+            i = new Intent(this, ChartActivity.class);
         } else if (id == R.id.nav_wheel) {
-            NavigationHelper.goTo(this, WheelActivity.class, username, currentUserId);
+            i = new Intent(this, WheelActivity.class);
         }
 
+        if (i != null) {
+            i.putExtra("username", username);
+            i.putExtra("userID", currentUserId); // ✅ FIXED here
+            startActivity(i);
+        }
 
         dashboard.closeDrawers();
         return true;

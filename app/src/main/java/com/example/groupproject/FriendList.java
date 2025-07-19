@@ -42,15 +42,25 @@ public class FriendList extends AppCompatActivity
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
 
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
 
+        // Get data from intent
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-        currentUserId = intent.getIntExtra("userId", -1);
+        currentUserId = intent.getIntExtra("userID", -1);
+        userid = currentUserId;
+
+        if (currentUserId == -1) {
+            Toast.makeText(this, "Error: User not recognized", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        Toast.makeText(this, "Received userID: " + userid, Toast.LENGTH_LONG).show();
+
 
         // Set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,9 +73,7 @@ public class FriendList extends AppCompatActivity
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         friendlist.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Update nav header with username
@@ -79,7 +87,7 @@ public class FriendList extends AppCompatActivity
         db = new DbHelper(this);
         expandableListView = findViewById(R.id.expandable_list);
 
-        userid = getIntent().getIntExtra("userid", 1); // default to 1
+      //  userid = getIntent().getIntExtra("userid", 1); // default to 1
 
         getData(userid);
 
@@ -227,32 +235,25 @@ public class FriendList extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+        Intent i = null;
+
         if (id == R.id.nav_dashboard) {
-            Intent i = new Intent(this, dashboard.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, dashboard.class);
         } else if (id == R.id.nav_friends) {
-            // Already in WheelActivity, do nothing
+            i = new Intent(this, FriendList.class);
         } else if (id == R.id.nav_search) {
-            Intent i = new Intent(this, SearchActivity.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, SearchActivity.class);
         } else if (id == R.id.nav_addfriend) {
-            Intent i = new Intent(this, AddFriend.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, AddFriend.class);
         } else if (id == R.id.nav_chart) {
-            Intent i = new Intent(this, ChartActivity.class);
-            i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
-            startActivity(i);
+            i = new Intent(this, ChartActivity.class);
         } else if (id == R.id.nav_wheel) {
-            Intent i = new Intent(this, WheelActivity.class);
+            i = new Intent(this, WheelActivity.class);
+        }
+
+        if (i != null) {
             i.putExtra("username", username);
-            i.putExtra("userId", currentUserId);
+            i.putExtra("userID", currentUserId);
             startActivity(i);
         }
 
