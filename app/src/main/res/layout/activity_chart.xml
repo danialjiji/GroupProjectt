@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-d
+
     <Button
         android:id="@+id/downloadPdfBtn"
         android:layout_width="wrap_content"
