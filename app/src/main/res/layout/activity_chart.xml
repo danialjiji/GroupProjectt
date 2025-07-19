@@ -52,7 +52,7 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginBottom="4dp"
-        android:background="@color/goldenyellow"
+        android:background="#FFBA00"
         android:textColor="@color/white"
         android:padding="8dp"/>
 

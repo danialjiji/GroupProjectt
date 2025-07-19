@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add Item"
-                android:backgroundTint="@color/goldenyellow"
+                android:backgroundTint="#B46617"
                 android:layout_marginRight="10dp"/>
 
             <Button
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete Items"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="#6D9773"
                 android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Spin Wheel"
-        android:backgroundTint="@color/goldenyellow"
+        android:backgroundTint="#B46617"
         android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
