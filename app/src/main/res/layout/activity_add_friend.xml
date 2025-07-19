@@ -8,12 +8,12 @@
     android:id="@+id/main_recyclerview"
     tools:context=".AddFriend">
 
-
     <!-- Main layout with vertical content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,127 +21,223 @@
             android:layout_height="wrap_content"
             android:background="#0C3B2E"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="Buddy Dashboard"
+            app:title="Friends Page"
             app:titleTextColor="@android:color/white" />
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Friends"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:background="@color/sagegreen"
+                android:textColor="@color/white"
+                android:padding="8dp"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Add Friend"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Come and grow your circle!"
+                android:textSize="14dp"
+                android:layout_marginTop="10dp"
+                />
 
-    <EditText
-        android:id="@+id/et_fn"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Full Name"
-        android:inputType="text"
-        android:layout_margin="12dp"
-        android:layout_marginTop="20dp" />
-
-    <EditText
-        android:id="@+id/et_femail"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Email"
-        android:inputType="none"
-        android:layout_margin="12dp"
-        android:layout_marginTop="20dp" />
-
-    <EditText
-        android:id="@+id/et_fnum"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Phone Number"
-        android:inputType="text"
-        android:layout_margin="12dp"
-        android:layout_marginTop="20dp" />
-
-    <EditText
-        android:id="@+id/et_fage"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Age"
-        android:inputType="text"
-        android:layout_margin="12dp"
-        android:layout_marginTop="20dp" />
-
-    <EditText
-        android:id="@+id/et_fdob"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="choose date"
-        android:focusable="false"
-        android:inputType="none"
-        android:layout_margin="12dp"
-        android:layout_marginTop="20dp"/>
-
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/radiogp1"
-        android:layout_margin="12dp"
-        android:layout_marginTop="10dp" >
-
-        <RadioButton
-            android:id="@+id/radiob1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Male" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
 
-        <RadioButton
-            android:id="@+id/radiob2"
-            android:layout_width="186dp"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Female" />
-    </RadioGroup>
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#9AAB89"
+                android:padding="12dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
 
-        <Button
-            android:id="@+id/btn_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#0C3B2E"
-            android:text="Reset"
-            android:layout_margin="5dp" />
+                <!-- Full Name -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name:"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="12dp"
+                    android:textSize="17dp" />
 
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#0C3B2E"
-            android:text="Submit"
-            android:layout_margin="5dp" />
+                <EditText
+                    android:id="@+id/et_fn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Enter Full Name"
+                    android:inputType="text"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                />
+
+                <!-- Email -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email:"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="12dp"
+                    android:textSize="17dp" />
+
+                <EditText
+                    android:id="@+id/et_femail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Enter Email"
+                    android:inputType="none"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                   />
+
+                <!-- Phone Number -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number:"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="12dp"
+                    android:textSize="17dp" />
+
+                <EditText
+                    android:id="@+id/et_fnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Enter Phone Number"
+                    android:inputType="text"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp" />
+
+                <!-- Age -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Age:"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="12dp"
+                    android:textSize="17dp" />
+
+                <EditText
+                    android:id="@+id/et_fage"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Enter Age"
+                    android:inputType="text"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp" />
+
+                <!-- Date of Birth -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth:"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="12dp"
+                    android:textSize="17dp" />
+
+                <EditText
+                    android:id="@+id/et_fdob"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Choose Date of Birth"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"/>
+
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogp1"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gender: "
+                        android:textSize="17dp"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/radiob1"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Male"
+                        android:textSize="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radiob2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:layout_marginLeft="25dp"
+                        android:textSize="15dp"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp">
+
+                    <Button
+                        android:id="@+id/btn_reset"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#0C3B2E"
+                        android:text="Reset"
+                        android:layout_margin="5dp" />
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#0C3B2E"
+                        android:text="Submit"
+                        android:layout_margin="5dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-      </LinearLayout>
 
-    <!-- Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:background="#0C3B2E"
-        app:headerLayout="@layout/nav_header"
-        app:itemTextColor="#FFFFFF"
-        app:itemIconTint="#FFBA00"
-        app:menu="@menu/nav_menu" />
+        <!-- Navigation Drawer -->
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:background="#0C3B2E"
+            app:headerLayout="@layout/nav_header"
+            app:itemTextColor="#FFFFFF"
+            app:itemIconTint="#FFBA00"
+            app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

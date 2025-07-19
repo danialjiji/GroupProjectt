@@ -31,12 +31,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please fill in all the form."
+            android:text="Please fill in all the form to Register."
+            android:layout_marginLeft="10dp"
             android:textColor="#999"
             android:textSize="14sp"
             android:layout_gravity="start"
-            android:layout_marginTop="4dp" />
-
+            android:layout_marginBottom="4dp" />
 
         <!-- Username -->
         <EditText
@@ -55,17 +55,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Name"
-            android:backgroundTint="@null"
-            android:padding="10dp"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:layout_marginBottom="12dp" />
-
-        <EditText
-            android:id="@+id/etRegisterGender"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Gender"
             android:backgroundTint="@null"
             android:padding="10dp"
             android:textColor="#000"
@@ -95,23 +84,77 @@
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <!-- Login Button -->
-        <Button
-            android:id="@+id/btnRegister"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Register"
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:backgroundTint="#9AC2B0"
-            android:layout_marginTop="30dp"
-            />
+            android:layout_height="wrap_content"
+            android:id="@+id/et_radiogp1"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender: "
+                android:textSize="18dp"
+
+                />
+
+            <RadioButton
+                android:id="@+id/rb_radiob1"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Male"
+                android:textSize="15dp"/>
+
+            <RadioButton
+                android:id="@+id/rb_radiob2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:layout_marginLeft="25dp"
+                android:textSize="15dp"/>
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+         >
+
+            <!-- Reset Button -->
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Reset"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:backgroundTint="#9AC2B0"
+                android:layout_marginEnd="2dp" />
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Register"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:backgroundTint="#9AC2B0"
+                android:layout_marginStart="2dp" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Login"
+            android:text="Back to Login"
             android:textColor="#000"
             android:textStyle="bold"
             android:backgroundTint="#FFBA00"
