@@ -147,7 +147,7 @@ public class AddFriend extends AppCompatActivity
                 Toast.makeText(this, "Friend Added!", Toast.LENGTH_SHORT).show();
                 Intent intentToFriendList = new Intent(this, FriendList.class);
                 intentToFriendList.putExtra("username", username);
-                intentToFriendList.putExtra("userId", currentUserId);
+                intentToFriendList.putExtra("userID", currentUserId);
                 startActivity(intentToFriendList);
                 finish();
 
