@@ -159,6 +159,13 @@ public class SearchActivity extends AppCompatActivity
             i = new Intent(this, ChartActivity.class);
         } else if (id == R.id.nav_wheel) {
             i = new Intent(this, WheelActivity.class);
+        }else if (id == R.id.nav_logout) {
+            Intent logoutIntent = new Intent(this, Login.class);
+            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            startActivity(logoutIntent);
+            finish(); // optional but good
+            return true;
         }
 
         if (i != null) {
